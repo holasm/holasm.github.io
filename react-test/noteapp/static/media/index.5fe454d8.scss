@@ -1,0 +1,91 @@
+.k-sm-btn{
+  display: inline-block;
+  font-size: 14px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0px 10px;
+  border-radius: 3px;
+  background: #3f51b5;
+  cursor: pointer;
+  -webkit-user-select: none;
+  color: white;
+}
+.notebook-toolbar{
+  position: relative;
+  height: 60px;
+  width: 100%;
+  background: #e3e3e3;
+  .layout{
+    position: relative;
+    height: inherit;
+  }
+  .form-input{
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    width: 400px;
+    transform: translateY(-50%);
+    border: 1px solid #aaa;
+  }
+  .notebook-storage{
+    position: absolute;
+    display: inline-block;
+    line-height: 60px;
+    right: 0;
+    .options, .option-item{
+      margin: 0;
+      padding: 0;
+    }
+    .option-item{
+      float: left;
+      list-style: none;
+      padding: 0 8px;
+      .k-sm-btn{
+        color: white;
+      }
+    }
+  }
+}
+
+.notebook-ul{
+  padding: 0;
+  margin: 0;
+  .notebook-li{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    // height: 70px;
+    line-height: 70px;
+    border: 1px solid #e3e3e3;
+    margin-top: 10px;
+    // padding: 0 20px;
+    .note-name, .note-info{
+      padding: 0 10px;
+    }
+    .note-name{
+      line-height: 40px;
+      height: 40px;
+      font-size: 20px;
+      a{
+        text-decoration: none;
+      }
+    }
+    .note-info{
+      height: 30px;
+      line-height: 30px;
+      font-size: 13px;
+      span.author{
+      }
+      span.tags{
+        margin-left: 10px;
+        span.tag{
+          margin-left: 5px;
+          background: #f2f2f2;
+          padding: 1px 4px;
+          border-radius: 5px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
