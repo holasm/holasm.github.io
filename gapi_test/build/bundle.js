@@ -152,7 +152,6 @@ gutil.createDirIfNotExists = function createDirIfNotExists(name, parentId, cb) {
       cb('Error: Invalid Value found', response)
       return
     }
-    console.log(response)
 
     if (!response.files) {
       console.error('No files found');
@@ -179,6 +178,7 @@ gutil.createDirIfNotExists = function createDirIfNotExists(name, parentId, cb) {
       });
       return
     }
+    
     if (response.files.length === 1) {
       // ok
       cb(null, response.files[0]);
@@ -745,7 +745,7 @@ NoteBook.prototype.createNote = function (name, cb) {
   __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createDirWithExt(this.noteBookId, name, '.note', function (err, res) {
     if (err) {cb(err); return}
     // if successfful create note.json
-    __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createFileIfNotExists('note.json', self.noteId, function (err, res2) {
+    __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createFileIfNotExists('note.json', res.id, function (err, res2) {
       self.metadata.notes.push({
         name: res.name,
         id: res.id,
