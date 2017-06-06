@@ -152,6 +152,7 @@ gutil.createDirIfNotExists = function createDirIfNotExists(name, parentId, cb) {
       cb('Error: Invalid Value found', response)
       return
     }
+    console.log(response)
 
     if (!response.files) {
       console.error('No files found');
@@ -178,7 +179,6 @@ gutil.createDirIfNotExists = function createDirIfNotExists(name, parentId, cb) {
       });
       return
     }
-
     if (response.files.length === 1) {
       // ok
       cb(null, response.files[0]);
