@@ -781,7 +781,7 @@ NoteBook.prototype.updateNoteBookMetadata = function (cb) {
   __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].uploadFile(this.noteBookMetaId, '/', JSON.stringify(this.metadata), cb);
 }
 
-/* unused harmony default export */ var _unused_webpack_default_export = (NoteBook);
+/* harmony default export */ __webpack_exports__["a"] = (NoteBook);
 
 /***/ }),
 /* 5 */
@@ -860,8 +860,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+window.NB = {}
+
 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__gapi_gapi__["a" /* default */])((err, res)=>{
   console.log('Authorized')
+  console.log(res)
+  NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_notebook__["a" /* default */](res.id)
 })
 
 /***/ })
