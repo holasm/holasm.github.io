@@ -744,6 +744,7 @@ NoteBook.prototype.createNote = function (name, cb) {
 
   __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createDirWithExt(this.noteBookId, name, '.note', function (err, res1) {
     if (err) {cb(err); return}
+    console.log(res1)
     // if successfful create note.json
     __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createFileIfNotExists('note.json', res1.id, function (err, res2) {
       self.metadata.notes.push({
