@@ -742,13 +742,13 @@ NoteBook.prototype.createNote = function (name, cb) {
     }
   }
 
-  __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createDirWithExt(this.noteBookId, name, '.note', function (err, res) {
+  __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createDirWithExt(this.noteBookId, name, '.note', function (err, res1) {
     if (err) {cb(err); return}
     // if successfful create note.json
-    __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createFileIfNotExists('note.json', res.id, function (err, res2) {
+    __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].createFileIfNotExists('note.json', res1.id, function (err, res2) {
       self.metadata.notes.push({
-        name: res.name,
-        id: res.id,
+        name: res1.name,
+        id: res1.id,
         metaId: res2.id,
       })
       // save the note metadata
