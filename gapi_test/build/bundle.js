@@ -869,6 +869,7 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__gapi_gapi__["a" /* default */
   NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_notebook__["a" /* default */](res.id)
   NB.init((err, res)=>{
     console.log(res)
+    console.log(NB.metadata)
   })
 })
 
