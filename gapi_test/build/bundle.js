@@ -864,7 +864,7 @@ window.NB = {}
 
 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__gapi_gapi__["a" /* default */])((err, res)=>{
   console.log('Authorized')
-  console.log(res)
+  console.log(err, res)
   NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_notebook__["a" /* default */](res.id)
 })
 
