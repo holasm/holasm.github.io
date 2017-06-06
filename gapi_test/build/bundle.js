@@ -243,7 +243,7 @@ gutil.deleteFile = function deleteFile(id, cb) {
 /** 
  * upload a file
  */
-gutil.uploadFile= function uploadFile(fileId, parentId, content, cb) {
+gutil.uploadFile= function uploadFile(fileId, parentId, content, cb, data) {
   var boundary = '-------314159265358979323846';
   var delimiter = "\r\n--" + boundary + "\r\n";
   var close_delim = "\r\n--" + boundary + "--";
@@ -289,11 +289,11 @@ gutil.uploadFile= function uploadFile(fileId, parentId, content, cb) {
     'headers': headers,
     'body': multipartRequestBody
   });
-  var fn = function (res) {
-    cb(null, res)
+  var fn = function (res, data) {
+    cb(null, res, data)
   }
   request.execute(function (res) {
-    fn(res);
+    fn(res, data);
   })
 }
 
@@ -571,7 +571,10 @@ noteProto.createChapter = function (name, cb) {
         topics: []
       })
       // save the note metadata
-      self.updateNoteMetadata(cb);
+      var fn = function () {
+        
+      }
+      self.updateNoteMetadata(cb, {chapter: res1, intro: res1});
     });
 
   });
@@ -609,7 +612,7 @@ noteProto.createTopic = function (chapterId, name, cb) {
     })
 
     // save the metadata
-    self.updateNoteMetadata(cb);
+    self.updateNoteMetadata(cb, {topic: res});
   });
 }
 
@@ -666,8 +669,8 @@ noteProto.deleteTopic = function (id, cb) {
   }
 }
 
-noteProto.updateNoteMetadata = function (cb) {
-  __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].uploadFile(this.noteMetaId, '/', JSON.stringify(this.metadata), cb);
+noteProto.updateNoteMetadata = function (cb, data) {
+  __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].uploadFile(this.noteMetaId, '/', JSON.stringify(this.metadata), cb, data);
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (Note);
@@ -869,7 +872,6 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__gapi_gapi__["a" /* default */
   NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_notebook__["a" /* default */](res.id)
   NB.init((err, res)=>{
     console.log(res)
-    console.log(NB.metadata)
   })
 })
 
