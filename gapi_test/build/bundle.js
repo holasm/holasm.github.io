@@ -484,8 +484,6 @@ function handleGauthLoad (cb) {
 
 
 
-
-
 //var newNote =  new Note('0B5nfwpxzN1PHazZ4MTFCX0U1OVk')
 function Note (id) {
   this.noteId = id;
@@ -672,7 +670,7 @@ noteProto.updateNoteMetadata = function (cb) {
   __WEBPACK_IMPORTED_MODULE_1__gutil__["a" /* default */].uploadFile(this.noteMetaId, '/', JSON.stringify(this.metadata), cb);
 }
 
-/* unused harmony default export */ var _unused_webpack_default_export = (Note);
+/* harmony default export */ __webpack_exports__["a"] = (Note);
 
 /***/ }),
 /* 4 */
@@ -862,11 +860,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 window.NB = {}
+window.NN = __WEBPACK_IMPORTED_MODULE_1__gapi_note__["a" /* default */]
 
 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__gapi_gapi__["a" /* default */])((err, res)=>{
   console.log('Authorized')
   console.log(err, res)
   NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_notebook__["a" /* default */](res.id)
+  NB.init((err, res)=>{
+    console.log(res)
+  })
 })
 
 /***/ })
