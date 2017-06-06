@@ -861,7 +861,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 window.NB = {}
 
-console.log(__WEBPACK_IMPORTED_MODULE_1__gapi_note__["a" /* default */])
+window.NN = __WEBPACK_IMPORTED_MODULE_1__gapi_note__["a" /* default */]
 
 __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__gapi_gapi__["a" /* default */])((err, res)=>{
   console.log('Authorized')
