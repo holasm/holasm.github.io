@@ -1990,6 +1990,7 @@ const async = {
   dumpTasks: function () {
     this.tasks = []
     this.running = false
+    __WEBPACK_IMPORTED_MODULE_0_store___default.a.remove('tasks')
   },
   loadTasks: function () {
     if(__WEBPACK_IMPORTED_MODULE_0_store___default.a.get('updateRemaining')){
