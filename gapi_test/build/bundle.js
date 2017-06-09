@@ -645,6 +645,8 @@ noteProto.init = function (cb) {
       if (!self.metadata.updatedAt) {
         cb('Error: Note updatedAt prop not found!')
       }
+      console.log(noteMeta)
+      console.log(self.metadata)
 
       //  else if (noteMeta.chapters.) {
       //   self.metadata.metaId = res.id;
