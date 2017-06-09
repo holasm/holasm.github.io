@@ -628,12 +628,13 @@ noteProto.init = function (cb) {
   // keep all task in sync otherwise theere will be inconsistencies bw local and remote
   __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('note.json', self.noteId, function (err, res) {
     __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(res.id, function (err, noteMeta, len) {
-      self.noteMeta = JSON.parse(noteMeta)
-      self.metadata = self.noteMetaId = res.id;
+      self.noteMetaId = res.id;
+      self.metadata = JSON.parse(noteMeta)
       if (len === 0) {
         self.metadata = {
           updatedAt: ((new Date()).getTime()) - 1000000,
           metaId: res.id,
+          noteId: self.noteId,
           chapters: []
         }
       } else if (!self.noteMeta.chapters) {
@@ -1973,7 +1974,7 @@ const caseUpdateMetadata = (self, task)=>{
 
 
 
-// window.localStore=localStore
+window.localStore=__WEBPACK_IMPORTED_MODULE_0_store___default.a
 
 const async = {
   note: {
