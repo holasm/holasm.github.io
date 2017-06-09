@@ -637,11 +637,12 @@ noteProto.init = function (cb) {
           noteId: self.noteId,
           chapters: []
         }
-      } else if (!self.noteMeta.chapters) {
+      } else if (!self.metadata.chapters) {
         self.noteMeta.chapters = []
         self.noteMeta.metaId = res.id
         self.metadata = self.noteMeta
       }
+
       if (!self.noteMeta.updatedAt) {
         cb('Error: Note updatedAt prop not found!')
       }
