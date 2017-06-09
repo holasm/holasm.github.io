@@ -1037,9 +1037,9 @@ noteProto.updateNoteMetadataSync = function (data, cb) {
 
 
 const updateFutureTask = function (self, cb) {
-  self.tasks.forEach(function(task) {
-    cb(task)
-  });
+  for (var i = 0; i < self.tasks.length; i++) {
+    cb(self.tasks[i])
+  }
   // update localStorage
   __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('tasks', self.tasks)
 }
