@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -300,16 +300,16 @@ function isObject(val) {
 	return val && {}.toString.call(val) === '[object Object]'
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var engine = __webpack_require__(18)
+var engine = __webpack_require__(19)
 
-var storages = __webpack_require__(19)
-var plugins = [__webpack_require__(16)]
+var storages = __webpack_require__(20)
+var plugins = [__webpack_require__(17)]
 
 module.exports = engine.createStore(storages, plugins)
 
@@ -319,9 +319,9 @@ module.exports = engine.createStore(storages, plugins)
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_chapters__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_chapters__ = __webpack_require__(11);
 
 
 
@@ -1049,6 +1049,116 @@ const updateMetadata = function (self, noteId, metadata) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+throw new Error("Cannot find module \"./constants\"");
+throw new Error("Cannot find module \"./gutil\"");
+
+
+
+/**
+ * NoteBook Class
+ * 
+ * @input: notebookId
+ *
+ */
+function NoteBook(id) {
+  this.noteBookId = id;
+
+  this.metadata = {}
+  // create a note.json if not already exists
+}
+
+NoteBook.prototype.init = function(cb) {
+  var _self = this;
+  if (!window.gapi || !window.gapi.client) {
+    cb('Error: gapi or gapi.client not defined!', null)
+    return
+  }
+  __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.createFileIfNotExists('notebook.json', this.noteBookId, function (err, res) {
+    _self.noteBookMetaId = res.id;
+    __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.downloadAndDecode(res.id, function (err, noteMeta, len) {
+      _self.noteMetaId = res.id;
+      if (len === 0) {
+        _self.metadata = {};
+        if (!_self.metadata.notes) {
+          _self.metadata.notes = []
+        }
+      } else {
+        _self.metadata = JSON.parse(noteMeta);
+        if (!_self.metadata.notes) {
+          _self.metadata.notes = []
+        }
+      }
+      cb(null, _self.metadata)
+      // show all structure
+      // start the noteApp
+    })
+  })
+}
+
+NoteBook.prototype.getNotes = function(cb) {
+  cb(this.metadata.notes)
+};
+
+NoteBook.prototype.createNote = function (name, cb) {
+  // update metadata
+  // upload the note.json
+  var self = this
+  for(var i = 0, length1 = this.metadata.notes.length; i < length1; i++){
+    var note = this.metadata.notes[i];
+    if (note.name === name) {
+      console.log('Note already exists');
+      cb(note, __WEBPACK_IMPORTED_MODULE_0__constants__["EXISTS"])
+      return
+    }
+  }
+
+  __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.createDirWithExt(this.noteBookId, name, '.note', function (err, res1) {
+    if (err) {cb(err); return}
+    console.log(res1)
+    // if successfful create note.json
+    __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.createFileIfNotExists('note.json', res1.id, function (err, res2) {
+      self.metadata.notes.push({
+        name: res1.name,
+        id: res1.id,
+        metaId: res2.id,
+      })
+      // save the note metadata
+      self.updateNoteBookMetadata(cb)
+    });
+  });
+}
+
+NoteBook.prototype.deleteNote = function (id, cb) {
+  var flag = 0;
+  // find chapter
+  for(var k = 0, length3 = this.metadata.notes.length; k < length3; k++){
+    var note = this.metadata.notes[k];
+    if (note.id  === id) {
+      this.metadata.notes.splice(k, 1);
+      //matched id 
+      flag = 1
+      break
+    }
+  }
+  if (flag) {
+    this.updateNoteBookMetadata((res)=>{
+      // delete the topic-name.md file
+      __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.deleteFile(id, cb);
+    })
+  }
+}
+
+NoteBook.prototype.updateNoteBookMetadata = function (cb) {
+  __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.uploadFile(this.noteBookMetaId, '/', JSON.stringify(this.metadata), cb);
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (NoteBook);
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gutil__ = __webpack_require__(4);
 
 
@@ -1203,7 +1313,7 @@ function handleGauthLoad (cb) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1214,7 +1324,7 @@ function handleGauthLoad (cb) {
 /* unused harmony export testCreateTopic */
 /* unused harmony export testDeleteTopic */
 /* unused harmony export testUpdateTopic */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(12);
 
 window.syncSave = __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */]
 
@@ -1345,7 +1455,7 @@ const testUpdateChapterIntro = ()=>{
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1515,7 +1625,7 @@ const addTask = function (self, task){
 /* harmony default export */ __webpack_exports__["a"] = (addTask);
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1525,7 +1635,7 @@ const EXISTS = 1
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1555,25 +1665,25 @@ const EXISTS = 1
 });
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(15);
 
 // import syncGet from './sync/syncSave'
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__sync_syncSave__["a" /* default */]);
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(14);
 
 
 
@@ -1778,7 +1888,7 @@ const execute =  function (self) {
 /* harmony default export */ __webpack_exports__["a"] = (execute);
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1831,15 +1941,15 @@ const caseUpdateMetadata = (self, task)=>{
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(13);
 
 
 
@@ -1924,14 +2034,14 @@ const async = {
 /* harmony default export */ __webpack_exports__["a"] = (async);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(6);
-throw new Error("Cannot find module \"./gapi/notebook\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__ = __webpack_require__(6);
 window.env = 'prod'
 
 
@@ -1944,7 +2054,7 @@ if (window.env === 'dev') {
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__["a" /* default */])((err, res)=>{
     console.log('Authorized')
     console.log(err, res)
-    NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_notebook___default.a(res.id)
+    NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__["a" /* default */](res.id)
     NB.init((err, res)=>{
       console.log(res)
     })
@@ -1968,19 +2078,19 @@ if (window.env === 'dev') {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = json2Plugin
 
 function json2Plugin() {
-	__webpack_require__(17)
+	__webpack_require__(18)
 	return {}
 }
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 //  json2.js
@@ -2491,7 +2601,7 @@ if (typeof JSON !== "object") {
 }());
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -2713,22 +2823,22 @@ function createStore(storages, plugins) {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
 	// Listed in order of usage preference
-	'localStorage': __webpack_require__(21),
-	'oldFF-globalStorage': __webpack_require__(23),
-	'oldIE-userDataStorage': __webpack_require__(24),
-	'cookieStorage': __webpack_require__(20),
-	'sessionStorage': __webpack_require__(25),
-	'memoryStorage': __webpack_require__(22),
+	'localStorage': __webpack_require__(22),
+	'oldFF-globalStorage': __webpack_require__(24),
+	'oldIE-userDataStorage': __webpack_require__(25),
+	'cookieStorage': __webpack_require__(21),
+	'sessionStorage': __webpack_require__(26),
+	'memoryStorage': __webpack_require__(23),
 }
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // cookieStorage is useful Safari private browser mode, where localStorage
@@ -2795,7 +2905,7 @@ function _has(key) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -2839,7 +2949,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 // memoryStorage is a useful last fallback to ensure that the store
@@ -2884,7 +2994,7 @@ function clearAll(key) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldFF-globalStorage provides storage for Firefox
@@ -2932,7 +3042,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldIE-userDataStorage provides storage for Internet Explorer
@@ -3065,7 +3175,7 @@ function _makeIEStorageElFunction() {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -3109,7 +3219,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 var g;
