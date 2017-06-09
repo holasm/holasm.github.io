@@ -1063,6 +1063,8 @@ const updateTopicRemoteId = function (self, localId, remoteId) {
 }
 
 const updateMetadata = function (self, noteId, metadata) {
+  console.log([].concat(self.tasks))
+  
   return new Promise((resolve, reject)=>{
     updateFutureTask(self, (task)=>{
       console.log(noteId, task)
