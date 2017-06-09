@@ -1931,8 +1931,6 @@ const caseUpdateMetadata = (self, task)=>{
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(' -> Metadata updated.', res)
         self.next()
       })
-      console.log('Just finishing tasks...')
-      self.next()
     }, ()=>{
       console.log(' --> Skipping metadata update.')
       self.next(1)
