@@ -635,6 +635,13 @@ noteProto.init = function (cb) {
           metaId: res.id,
           chapters: []
         }
+      } else if (!noteMeta.chapters) {
+        noteMeta.chapters = []
+        noteMeta.metaId = res.id
+        self.metadata = noteMeta
+      }
+      if (!noteMeta.updatedAt) {
+        cb('Error: Note updatedAt prop not found!')
       }
 
       //  else if (noteMeta.chapters.) {
@@ -1757,7 +1764,7 @@ const execute =  function (self) {
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter intro file created.')
             // log(metadata)
             // get the introId and update others
-            // updateMetadata(self, self.note.noteId, self.note.metadata)
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, self.note.metadata)
             self.next()
           })
         }, ()=>{
