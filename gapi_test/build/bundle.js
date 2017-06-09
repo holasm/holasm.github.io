@@ -1809,6 +1809,7 @@ const execute =  function (self) {
 
     case '@DELETE_CHAPTER_CREATE_METADATA':
       self.assertNote(task, ()=>{
+        console.log('++++++++++++==================')
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           console.log(task.payload)
           console.log('++++++++++++==================')
