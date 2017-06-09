@@ -134,10 +134,10 @@ utils.encodeBase64 = function(str) {
 /* harmony default export */ __webpack_exports__["d"] = (utils);
 
 const log = function () {
-  if (window.env !== 'dev') {
+  // if (window.env !== 'dev') {
     var arr = arguments
     console.log.apply(null, arr)
-  }
+  // }
 }
 
 const logStore = {
