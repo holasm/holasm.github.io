@@ -930,7 +930,7 @@ noteProto.deleteChapterSync = function (id, cb) {
   // find chapter
   for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
     var chapter = this.metadata.chapters[k];
-    console.log(chapter.id, id)
+    console.log(chapter.id, id, chapter.id === id)
     if (chapter.id == id) {
       //matched id 
       this.metadata.chapters.splice(k, 1);
