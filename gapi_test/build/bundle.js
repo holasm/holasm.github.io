@@ -1818,7 +1818,7 @@ const execute =  function (self) {
             console.log(metadata)
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
             console.log('-----------------')
-            // self.next()
+            self.next()
           })
         }, ()=>{
           console.log('==================')
