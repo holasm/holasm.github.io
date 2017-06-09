@@ -1808,6 +1808,7 @@ const execute =  function (self) {
       break
 
     case '@DELETE_CHAPTER_CREATE_METADATA':
+        console.log('++++++++++++==================')
       self.assertNote(task, ()=>{
         console.log('++++++++++++==================')
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
@@ -1829,6 +1830,7 @@ const execute =  function (self) {
       break
 
     case '@CREATE_TOPIC_FILE':  // => @UPDATE_METADATA
+
       self.assertNote(task, ()=>{
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> New topic created')
