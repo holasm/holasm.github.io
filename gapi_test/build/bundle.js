@@ -2050,8 +2050,10 @@ window.env = 'prod'
 
 window.NB = {}
 
-if (window.env === 'dev') {
+if (window.env !== 'dev') {
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__["a" /* default */])((err, res)=>{
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tests_server_sync__["a" /* testIncompleteTaskLoading */])()
+
     console.log('Authorized')
     console.log(err, res)
     NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__["a" /* default */](res.id)
