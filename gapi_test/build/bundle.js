@@ -1987,6 +1987,10 @@ const async = {
   addTask: function (task) {
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__addTask_addTask__["a" /* default */])(this, task) // some new tasks are assigned
   },
+  dumpTasks: function () {
+    this.tasks = []
+    this.running = false
+  },
   loadTasks: function () {
     if(__WEBPACK_IMPORTED_MODULE_0_store___default.a.get('updateRemaining')){
       var tasks = __WEBPACK_IMPORTED_MODULE_0_store___default.a.get('tasks')
