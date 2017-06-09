@@ -756,6 +756,7 @@ noteProto.createChapterIntroSync = function (id, name, cb) {
       introId: res.id,
       topics: []
     })
+    console.log(self.metadata)
     cb(null, self.metadata, res.id) // saved afterwards
     // save the note metadata
     // self.updateNoteMetadata(cb, );
