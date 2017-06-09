@@ -1521,7 +1521,7 @@ const addTask = function (self, task){
 
           task.payload.metadata = ''
           self.tasks.push({
-            type: 'UPDATE_METADATA',
+            type: '@UPDATE_METADATA',
             payload: task.payload
           })
           break;
@@ -1534,7 +1534,7 @@ const addTask = function (self, task){
           })
           task.payload.metadata = ''
           self.tasks.push({
-            type: 'UPDATE_METADATA',
+            type: '@UPDATE_METADATA',
             payload: task.payload
           })
           break;
