@@ -1947,11 +1947,13 @@ const caseUpdateMetadata = (self, task)=>{
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
       var metadata = Object.assign({}, task.payload.metadata)
       metadata.updatedAt = task.payload.timestamp
-      self.note.updateNoteMetadataSync(metadata, (err, res)=>{
-        console.log(metadata)
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(' -> Metadata updated.', res)
-        self.next()
-      })
+      // self.note.updateNoteMetadataSync(metadata, (err, res)=>{
+      //   console.log(metadata)
+      //   log(' -> Metadata updated.', res)
+      //   self.next()
+      // })
+      console.log('Just finishing tasks...')
+      self.next()
     }, ()=>{
       console.log(' --> Skipping metadata update.')
       self.next(1)
