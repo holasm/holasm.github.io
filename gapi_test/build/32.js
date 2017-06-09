@@ -774,6 +774,10 @@ noteProto.createChapterIntroSync = function (id, name, cb) {
   });
 }
 
+noteProto.createChapterFile = function (name, cb) {
+  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
+}
+
 noteProto.createChapter = function (name, cb) {
   // update metadata
   // upload the note.json
