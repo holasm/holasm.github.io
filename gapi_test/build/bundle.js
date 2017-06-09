@@ -1811,16 +1811,18 @@ const execute =  function (self) {
       self.assertNote(task, ()=>{
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           console.log(task.payload)
+          console.log('++++++++++++==================')
           self.note.deleteChapterSync(task.payload.chapterRemoteId, (err, metadata)=>{
             if (err) { __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(err); return }
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter delete metadata created')
             console.log(metadata)
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
-            self.next()
+            console.log('-----------------')
+            // self.next()
           })
         }, ()=>{
-          self.next(1)
-          console.log('Skipping!!!')
+          console.log('==================')
+          // self.next(1)
         })
       })
       break
