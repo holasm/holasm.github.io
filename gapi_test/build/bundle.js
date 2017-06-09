@@ -638,9 +638,8 @@ noteProto.init = function (cb) {
           chapters: []
         }
       } else if (!self.metadata.chapters) {
-        self.noteMeta.chapters = []
-        self.noteMeta.metaId = res.id
-        self.metadata = self.noteMeta
+        self.metadata.chapters = []
+        self.metadata.metaId = res.id
       }
 
       if (!self.noteMeta.updatedAt) {
