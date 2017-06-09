@@ -1064,20 +1064,16 @@ const updateTopicRemoteId = function (self, localId, remoteId) {
 
 const updateMetadata = function (self, noteId, metadata) {
   console.log([].concat(self.tasks))
-  
-  return new Promise((resolve, reject)=>{
-    updateFutureTask(self, (task)=>{
-      console.log(noteId, task)
-      if (task.type === '@UPDATE_METADATA') {
-        if (task.payload.noteId === noteId) {
-          console.log('Updating future metadata....')
-          task.payload.metadata = metadata
-          __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
-        }
+  updateFutureTask(self, (task)=>{
+    console.log(noteId, task)
+    if (task.type === '@UPDATE_METADATA') {
+      if (task.payload.noteId === noteId) {
+        console.log('Updating future metadata....')
+        task.payload.metadata = metadata
+        __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
       }
-    });
-    resolve()
-  })
+    }
+  });
 }
 
 
@@ -1732,9 +1728,7 @@ const execute =  function (self) {
             // log(metadata)
             // get the introId and update others
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, self.note.metadata)
-            .then(()=>{
-              self.next()
-            })
+            self.next()
           })
         }, ()=>{
           self.next(1)
@@ -1781,9 +1775,7 @@ const execute =  function (self) {
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter delete metadata created')
             console.log(metadata)
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
-            .then(()=>{
-              self.next()
-            })
+            self.next()
           })
         }, ()=>{
           self.next(1)
