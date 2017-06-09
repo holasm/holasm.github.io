@@ -1063,17 +1063,19 @@ const updateTopicRemoteId = function (self, localId, remoteId) {
 }
 
 const updateMetadata = function (self, noteId, metadata) {
-  updateFutureTask(self, (task)=>{
-    console.log(noteId, task)
-    if (task.type === '@UPDATE_METADATA') {
-      if (task.payload.noteId === noteId) {
-        console.log('Updating future metadata....')
-        task.payload.metadata = metadata
-        __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
+  return new Promise((resolve, reject)=>{
+    updateFutureTask(self, (task)=>{
+      console.log(noteId, task)
+      if (task.type === '@UPDATE_METADATA') {
+        if (task.payload.noteId === noteId) {
+          console.log('Updating future metadata....')
+          task.payload.metadata = metadata
+          __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
+        }
       }
-    }
-  });
-
+    });
+    resolve()
+  })
 }
 
 
@@ -1727,6 +1729,9 @@ const execute =  function (self) {
             __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* logStore */].flushInLine() // flush messages
 
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["a" /* updateChapterRemmoteId */])(self, task.payload.chapterLocalId, res.id)
+            .then(()=>{
+              self.next()
+            })
             self.next()
           })
           // updateChapterRemmoteId(self, task.payload.chapterLocalId, id)
@@ -1752,7 +1757,9 @@ const execute =  function (self) {
             // log(metadata)
             // get the introId and update others
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, self.note.metadata)
-            self.next()
+            .then(()=>{
+              self.next()
+            })
           })
         }, ()=>{
           self.next(1)
@@ -1799,7 +1806,9 @@ const execute =  function (self) {
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter delete metadata created')
             console.log(metadata)
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
-            self.next()
+            .then(()=>{
+              self.next()
+            })
           })
         }, ()=>{
           self.next(1)
