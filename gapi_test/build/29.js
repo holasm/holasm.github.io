@@ -1978,7 +1978,7 @@ const async = {
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__addTask_addTask__["a" /* default */])(this, task) // some new tasks are assigned
   },
   dumpTasks: function () {
-    console.log([].concat(this.tasks))
+    console.log('Dumped tasks => ', [].concat(this.tasks))
     this.tasks = []
     this.running = false
     __WEBPACK_IMPORTED_MODULE_0_store___default.a.remove('tasks')
