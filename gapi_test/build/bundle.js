@@ -642,7 +642,7 @@ noteProto.init = function (cb) {
         self.metadata.metaId = res.id
       }
 
-      if (!self.noteMeta.updatedAt) {
+      if (!self.metadata.updatedAt) {
         cb('Error: Note updatedAt prop not found!')
       }
 
