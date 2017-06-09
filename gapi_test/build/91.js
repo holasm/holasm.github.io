@@ -774,10 +774,6 @@ noteProto.createChapterIntroSync = function (id, name, cb) {
   });
 }
 
-noteProto.createChapterFile = function (name, cb) {
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
-}
-
 noteProto.createChapter = function (name, cb) {
   // update metadata
   // upload the note.json
@@ -947,6 +943,10 @@ noteProto.deleteChapterSync = function (id, cb) {
   } else {
     cb('Chapter with id => '+ id + ' not found', self.metadata)
   }
+}
+
+noteProto.deleteChapterFile = function (id, cb) {
+  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
 }
 
 noteProto.deleteTopic = function (id, cb) {
@@ -1856,7 +1856,7 @@ const execute =  function (self) {
       self.assertNote(task, ()=>{
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter file deleted.')
-          self.note.createChapterFile(task.payload.chapterRemoteId, (err, res)=>{
+          self.note.deleteChapterFile(task.payload.chapterRemoteId, (err, res)=>{
             self.next()
           })
         }, ()=>{
