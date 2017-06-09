@@ -304,6 +304,266 @@ function isObject(val) {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
+
+
+var gutil = {}
+
+gutil.createDirWithExt = function createDirWithExt(parentId, dirName, extension, cb) {
+  if (!window.gapi || !window.gapi.client) {
+    cb('Error: gapi or gapi.client not defined!', null)
+    return
+  }
+  gutil.createDirIfNotExists(dirName+extension, parentId, cb)
+}
+
+gutil.createFileIfNotExists = function createFileIfNotExists(name, parentId, cb) {
+  if (!window.gapi || !window.gapi.client) {
+    cb('Error: gapi or gapi.client not defined!', null)
+    return
+  }
+  var qp = '';
+  if (parentId !== '/') {// if not a parent provided create at rootDir
+    qp = "'" + parentId + "' in parents and ";
+  }
+
+  // get all files in parentId
+  window.gapi.client.drive.files.list({
+    'q': qp + "name='" + name  + "' and trashed != true",
+    'pageSize': 5,
+    'fields': "nextPageToken, files(id, name)"
+  }).execute(function(response) {
+    if (response.message === 'Invalid Value') {
+      console.log('Error...', response);
+      cb('Error: Invalid Value found', response)
+      return
+    }
+
+    if (!response.files) {
+      console.error('No files found');
+      cb('Error: no files found', response)
+      return
+    }
+
+    /*Create a initial root folder*/
+    if (response.files.length === 0) {
+      var fileMetadata = {
+        'name' : name,
+        'mimeType' : 'text/plain'
+      };
+
+      if (parentId !== '/') {
+        fileMetadata.parents = [ parentId ]
+      }
+
+      window.gapi.client.drive.files.create({
+         resource: fileMetadata,
+         fields: 'id, name'
+      }).execute(function(resp, raw_resp) {
+        cb(null, resp);
+      });
+      return
+    }
+
+    if (response.files.length === 1) {
+      // ok
+      cb(null, response.files[0]);
+    } else {
+      console.log('Already exists');
+    }
+  });
+  // create if not exists
+  // pass to cb
+}
+
+gutil.createDirIfNotExists = function createDirIfNotExists(name, parentId, cb) {
+  if (!window.gapi || !window.gapi.client) {
+    cb('Error: gapi or gapi.client not defined!', null)
+    return
+  }
+  var qp = '';
+  if (parentId !== '/') {// if not a parent provided create at rootDir
+    qp = "'" + parentId + "' in parents and ";
+  }
+
+  // get all files in parentId
+  window.gapi.client.drive.files.list({
+    'q': qp + "name='" + name  + "' and trashed != true",
+    'pageSize': 5,
+    'fields': "nextPageToken, files(id, name)"
+  }).execute(function(response) {
+    if (response.message === 'Invalid Value') {
+      console.log('Error...', response);
+      cb('Error: Invalid Value found', response)
+      return
+    }
+
+    if (!response.files) {
+      console.error('No files found');
+      cb('Error: no files found', response)
+      return
+    }
+
+    /*Create a initial root folder*/
+    if (response.files.length === 0) {
+      var fileMetadata = {
+        'name' : name,
+        'mimeType' : 'application/vnd.google-apps.folder'
+      };
+
+      if (parentId !== '/') {
+        fileMetadata.parents = [ parentId ]
+      }
+
+      window.gapi.client.drive.files.create({
+         resource: fileMetadata,
+         fields: 'id, name'
+      }).execute(function(res, raw_res) {
+        cb(null, res);
+      });
+      return
+    }
+    
+    if (response.files.length === 1) {
+      // ok
+      cb(null, response.files[0]);
+    } else {
+      console.log('Already exists');
+    }
+  });
+  // create if not exists
+  // pass to cb
+}
+
+/** 
+ * read a file
+ */
+gutil.fetchBlob = function fetchBlob(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.setRequestHeader("Authorization", 'Bearer ' + window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token);
+    xhr.onload = function () {
+      console.log("Got response");
+      console.log(this.response);
+      callback(this.response);
+    };
+    xhr.onerror = function () {
+      console.log('Failed to fetch ' + url);
+    };
+    xhr.send();
+}
+
+gutil.download = function download(id, cb) {
+    gutil.fetchBlob('https://www.googleapis.com/drive/v3/files/' + id + '?alt=media', function (data) {
+        var reader = new FileReader();
+        reader.addEventListener("loadend", function(event) {
+           // event.reader.result contains the contents of blob as a typed array
+           cb(event.target.result)
+        });
+        reader.readAsArrayBuffer(data);
+    });
+}
+
+gutil.downloadAndDecode = function downloadAndDecode(id, cb) {
+  gutil.download(id, function (arrBuff) {
+    var data = String.fromCharCode.apply(null, new Uint8Array(arrBuff));
+    cb(null, data, data.length)
+    // appendd to markdown editor
+  })
+}
+
+
+/** 
+ * delete a file
+ */
+gutil.deleteFile = function deleteFile(id, cb) {
+  if (!window.gapi || !window.gapi.client) {
+    cb('Error: gapi or gapi.client not defined!', null)
+    return
+  }
+  window.gapi.client.drive.files.delete({
+    fileId: id
+  }).execute(function(res) {
+    cb(null, res)
+  });
+}
+
+/** 
+ * upload a file
+ */
+gutil.uploadFile= function uploadFile(fileId, parentId, content, cb, data) {
+  if (!window.gapi || !window.gapi.client) {
+    cb('Error: gapi or gapi.client not defined!', null)
+    return
+  }
+  var boundary = '-------314159265358979323846';
+  var delimiter = "\r\n--" + boundary + "\r\n";
+  var close_delim = "\r\n--" + boundary + "--";
+  var contentType = 'text/plain';
+  var path = '/upload/drive/v3/files';
+  var metadata = {
+    mimeType: contentType
+  };
+  if (parentId !== '/') {
+    metadata.parents = [ parentId ];
+    // 0B5nfwpxzN1PHcm1uRnlDMk5GS0k
+    // 0B5nfwpxzN1PHNmo3NVQ2aEdfdU0
+  }
+
+  var method = 'POST';
+  if (fileId !== -1) {
+    path += '/' + fileId;
+    method = 'PATCH';
+  }
+  var headers = {
+    'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+  };
+  var base64Data = __WEBPACK_IMPORTED_MODULE_0__utils__["d" /* default */].encodeBase64(content);
+  var multipartRequestBody = [
+    delimiter,
+    'Content-Type: application/json\r\n\r\n',
+    JSON.stringify(metadata),
+    delimiter,
+    'Content-Type: ',
+    contentType,
+    '\r\n',
+    'Content-Transfer-Encoding: base64\r\n',
+    '\r\n',
+    base64Data,
+    close_delim
+  ].join("");
+  var request = window.gapi.client.request({
+    'path': path,
+    'method': method,
+    'params': {
+      'uploadType': 'multipart'
+    },
+    'headers': headers,
+    'body': multipartRequestBody
+  });
+  var fn = function (res, data) {
+    cb(null, res, data)
+  }
+  request.execute(function (res) {
+    fn(res, data);
+  })
+}
+
+// 0B5nfwpxzN1PHTDNlM0ROal8wM0E
+
+// var NoteBookApi = {
+//   notebook: NoteBook,
+//   note: Note
+// }
+
+/* harmony default export */ __webpack_exports__["a"] = (gutil);
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var engine = __webpack_require__(19)
@@ -315,12 +575,22 @@ module.exports = engine.createStore(storages, plugins)
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(4);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
+const EXISTS = 1
+
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_chapters__ = __webpack_require__(11);
 
 
@@ -732,274 +1002,14 @@ noteProto.updateNoteMetadataSync = function (data, cb) {
 /* harmony default export */ __webpack_exports__["a"] = (Note);
 
 /***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
-
-
-var gutil = {}
-
-gutil.createDirWithExt = function createDirWithExt(parentId, dirName, extension, cb) {
-  if (!window.gapi || !window.gapi.client) {
-    cb('Error: gapi or gapi.client not defined!', null)
-    return
-  }
-  gutil.createDirIfNotExists(dirName+extension, parentId, cb)
-}
-
-gutil.createFileIfNotExists = function createFileIfNotExists(name, parentId, cb) {
-  if (!window.gapi || !window.gapi.client) {
-    cb('Error: gapi or gapi.client not defined!', null)
-    return
-  }
-  var qp = '';
-  if (parentId !== '/') {// if not a parent provided create at rootDir
-    qp = "'" + parentId + "' in parents and ";
-  }
-
-  // get all files in parentId
-  window.gapi.client.drive.files.list({
-    'q': qp + "name='" + name  + "' and trashed != true",
-    'pageSize': 5,
-    'fields': "nextPageToken, files(id, name)"
-  }).execute(function(response) {
-    if (response.message === 'Invalid Value') {
-      console.log('Error...', response);
-      cb('Error: Invalid Value found', response)
-      return
-    }
-
-    if (!response.files) {
-      console.error('No files found');
-      cb('Error: no files found', response)
-      return
-    }
-
-    /*Create a initial root folder*/
-    if (response.files.length === 0) {
-      var fileMetadata = {
-        'name' : name,
-        'mimeType' : 'text/plain'
-      };
-
-      if (parentId !== '/') {
-        fileMetadata.parents = [ parentId ]
-      }
-
-      window.gapi.client.drive.files.create({
-         resource: fileMetadata,
-         fields: 'id, name'
-      }).execute(function(resp, raw_resp) {
-        cb(null, resp);
-      });
-      return
-    }
-
-    if (response.files.length === 1) {
-      // ok
-      cb(null, response.files[0]);
-    } else {
-      console.log('Already exists');
-    }
-  });
-  // create if not exists
-  // pass to cb
-}
-
-gutil.createDirIfNotExists = function createDirIfNotExists(name, parentId, cb) {
-  if (!window.gapi || !window.gapi.client) {
-    cb('Error: gapi or gapi.client not defined!', null)
-    return
-  }
-  var qp = '';
-  if (parentId !== '/') {// if not a parent provided create at rootDir
-    qp = "'" + parentId + "' in parents and ";
-  }
-
-  // get all files in parentId
-  window.gapi.client.drive.files.list({
-    'q': qp + "name='" + name  + "' and trashed != true",
-    'pageSize': 5,
-    'fields': "nextPageToken, files(id, name)"
-  }).execute(function(response) {
-    if (response.message === 'Invalid Value') {
-      console.log('Error...', response);
-      cb('Error: Invalid Value found', response)
-      return
-    }
-
-    if (!response.files) {
-      console.error('No files found');
-      cb('Error: no files found', response)
-      return
-    }
-
-    /*Create a initial root folder*/
-    if (response.files.length === 0) {
-      var fileMetadata = {
-        'name' : name,
-        'mimeType' : 'application/vnd.google-apps.folder'
-      };
-
-      if (parentId !== '/') {
-        fileMetadata.parents = [ parentId ]
-      }
-
-      window.gapi.client.drive.files.create({
-         resource: fileMetadata,
-         fields: 'id, name'
-      }).execute(function(res, raw_res) {
-        cb(null, res);
-      });
-      return
-    }
-    
-    if (response.files.length === 1) {
-      // ok
-      cb(null, response.files[0]);
-    } else {
-      console.log('Already exists');
-    }
-  });
-  // create if not exists
-  // pass to cb
-}
-
-/** 
- * read a file
- */
-gutil.fetchBlob = function fetchBlob(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.setRequestHeader("Authorization", 'Bearer ' + window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token);
-    xhr.onload = function () {
-      console.log("Got response");
-      console.log(this.response);
-      callback(this.response);
-    };
-    xhr.onerror = function () {
-      console.log('Failed to fetch ' + url);
-    };
-    xhr.send();
-}
-
-gutil.download = function download(id, cb) {
-    gutil.fetchBlob('https://www.googleapis.com/drive/v3/files/' + id + '?alt=media', function (data) {
-        var reader = new FileReader();
-        reader.addEventListener("loadend", function(event) {
-           // event.reader.result contains the contents of blob as a typed array
-           cb(event.target.result)
-        });
-        reader.readAsArrayBuffer(data);
-    });
-}
-
-gutil.downloadAndDecode = function downloadAndDecode(id, cb) {
-  gutil.download(id, function (arrBuff) {
-    var data = String.fromCharCode.apply(null, new Uint8Array(arrBuff));
-    cb(null, data, data.length)
-    // appendd to markdown editor
-  })
-}
-
-
-/** 
- * delete a file
- */
-gutil.deleteFile = function deleteFile(id, cb) {
-  if (!window.gapi || !window.gapi.client) {
-    cb('Error: gapi or gapi.client not defined!', null)
-    return
-  }
-  window.gapi.client.drive.files.delete({
-    fileId: id
-  }).execute(function(res) {
-    cb(null, res)
-  });
-}
-
-/** 
- * upload a file
- */
-gutil.uploadFile= function uploadFile(fileId, parentId, content, cb, data) {
-  if (!window.gapi || !window.gapi.client) {
-    cb('Error: gapi or gapi.client not defined!', null)
-    return
-  }
-  var boundary = '-------314159265358979323846';
-  var delimiter = "\r\n--" + boundary + "\r\n";
-  var close_delim = "\r\n--" + boundary + "--";
-  var contentType = 'text/plain';
-  var path = '/upload/drive/v3/files';
-  var metadata = {
-    mimeType: contentType
-  };
-  if (parentId !== '/') {
-    metadata.parents = [ parentId ];
-    // 0B5nfwpxzN1PHcm1uRnlDMk5GS0k
-    // 0B5nfwpxzN1PHNmo3NVQ2aEdfdU0
-  }
-
-  var method = 'POST';
-  if (fileId !== -1) {
-    path += '/' + fileId;
-    method = 'PATCH';
-  }
-  var headers = {
-    'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
-  };
-  var base64Data = __WEBPACK_IMPORTED_MODULE_0__utils__["d" /* default */].encodeBase64(content);
-  var multipartRequestBody = [
-    delimiter,
-    'Content-Type: application/json\r\n\r\n',
-    JSON.stringify(metadata),
-    delimiter,
-    'Content-Type: ',
-    contentType,
-    '\r\n',
-    'Content-Transfer-Encoding: base64\r\n',
-    '\r\n',
-    base64Data,
-    close_delim
-  ].join("");
-  var request = window.gapi.client.request({
-    'path': path,
-    'method': method,
-    'params': {
-      'uploadType': 'multipart'
-    },
-    'headers': headers,
-    'body': multipartRequestBody
-  });
-  var fn = function (res, data) {
-    cb(null, res, data)
-  }
-  request.execute(function (res) {
-    fn(res, data);
-  })
-}
-
-// 0B5nfwpxzN1PHTDNlM0ROal8wM0E
-
-// var NoteBookApi = {
-//   notebook: NoteBook,
-//   note: Note
-// }
-
-/* harmony default export */ __webpack_exports__["a"] = (gutil);
-
-/***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return updateMetadata; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return updateTopicRemoteId; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return updateChapterRemmoteId; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
 
@@ -1045,12 +1055,12 @@ const updateMetadata = function (self, noteId, metadata) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-throw new Error("Cannot find module \"./constants\"");
-throw new Error("Cannot find module \"./gutil\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(2);
 
 
 
@@ -1073,9 +1083,9 @@ NoteBook.prototype.init = function(cb) {
     cb('Error: gapi or gapi.client not defined!', null)
     return
   }
-  __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.createFileIfNotExists('notebook.json', this.noteBookId, function (err, res) {
+  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('notebook.json', this.noteBookId, function (err, res) {
     _self.noteBookMetaId = res.id;
-    __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.downloadAndDecode(res.id, function (err, noteMeta, len) {
+    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(res.id, function (err, noteMeta, len) {
       _self.noteMetaId = res.id;
       if (len === 0) {
         _self.metadata = {};
@@ -1107,16 +1117,16 @@ NoteBook.prototype.createNote = function (name, cb) {
     var note = this.metadata.notes[i];
     if (note.name === name) {
       console.log('Note already exists');
-      cb(note, __WEBPACK_IMPORTED_MODULE_0__constants__["EXISTS"])
+      cb(note, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* EXISTS */])
       return
     }
   }
 
-  __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.createDirWithExt(this.noteBookId, name, '.note', function (err, res1) {
+  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createDirWithExt(this.noteBookId, name, '.note', function (err, res1) {
     if (err) {cb(err); return}
     console.log(res1)
     // if successfful create note.json
-    __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.createFileIfNotExists('note.json', res1.id, function (err, res2) {
+    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('note.json', res1.id, function (err, res2) {
       self.metadata.notes.push({
         name: res1.name,
         id: res1.id,
@@ -1143,23 +1153,23 @@ NoteBook.prototype.deleteNote = function (id, cb) {
   if (flag) {
     this.updateNoteBookMetadata((res)=>{
       // delete the topic-name.md file
-      __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.deleteFile(id, cb);
+      __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
     })
   }
 }
 
 NoteBook.prototype.updateNoteBookMetadata = function (cb) {
-  __WEBPACK_IMPORTED_MODULE_1__gutil___default.a.uploadFile(this.noteBookMetaId, '/', JSON.stringify(this.metadata), cb);
+  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].uploadFile(this.noteBookMetaId, '/', JSON.stringify(this.metadata), cb);
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (NoteBook);
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gutil__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gutil__ = __webpack_require__(2);
 
 
 function handleGauthLoad (cb) {
@@ -1313,7 +1323,7 @@ function handleGauthLoad (cb) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1455,11 +1465,11 @@ const testUpdateChapterIntro = ()=>{
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
 
@@ -1625,16 +1635,6 @@ const addTask = function (self, task){
 /* harmony default export */ __webpack_exports__["a"] = (addTask);
 
 /***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
-const EXISTS = 1
-
-
-
-/***/ }),
 /* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1681,8 +1681,8 @@ const EXISTS = 1
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(14);
 
 
@@ -1894,9 +1894,9 @@ const execute =  function (self) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return caseCreateNote; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return caseUpdateMetadata; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__element_note__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__element_note__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(6);
 
 
 
@@ -1945,9 +1945,9 @@ const caseUpdateMetadata = (self, task)=>{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(13);
 
@@ -2039,9 +2039,9 @@ const async = {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__ = __webpack_require__(7);
 window.env = 'prod'
 
 
