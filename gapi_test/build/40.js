@@ -1519,9 +1519,7 @@ const addTask = function (self, task){
 
           self.tasks.push({
             type: '@CREATE_CHAPTER_INTRO_FILE',
-            payload:{
-              payload: task.payload
-            }
+            payload: task.payload
           })
 
           task.payload.metadata = ''
