@@ -1731,9 +1731,6 @@ const execute =  function (self) {
             __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* logStore */].flushInLine() // flush messages
 
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["a" /* updateChapterRemmoteId */])(self, task.payload.chapterLocalId, res.id)
-            .then(()=>{
-              self.next()
-            })
             self.next()
           })
           // updateChapterRemmoteId(self, task.payload.chapterLocalId, id)
