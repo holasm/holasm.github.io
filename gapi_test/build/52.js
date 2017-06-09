@@ -63,122 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return assertUpdate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logStore; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return log; });
-var utils = {}
-utils.encodeBase64 = function(str) {
-  if(str.length === 0) {
-    return "";
-  }
-
-  // UTF-8 to byte array
-  var bytes = [], offset = 0, length, char;
-
-  str = encodeURI(str);
-  length = str.length;
-
-  while(offset < length) {
-    char = str[offset];
-    offset += 1;
-
-    if('%' !== char) {
-      bytes.push(char.charCodeAt(0));
-    }
-    else {
-      char = str[offset] + str[offset + 1];
-      bytes.push(parseInt(char, 16));
-      offset += 2;
-    }
-  }
-
-  // byte array to base64
-  var padchar = '=';
-  var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-
-  var i, b10;
-  var x = [];
-
-  var imax = bytes.length - bytes.length % 3;
-
-  for(i = 0; i < imax; i += 3) {
-    b10 = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
-    x.push(alpha.charAt(b10 >> 18));
-    x.push(alpha.charAt((b10 >> 12) & 0x3F));
-    x.push(alpha.charAt((b10 >> 6) & 0x3f));
-    x.push(alpha.charAt(b10 & 0x3f));
-  }
-  switch(bytes.length - imax) {
-    case 1:
-      b10 = bytes[i] << 16;
-      x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) + padchar + padchar);
-      break;
-    case 2:
-      b10 = (bytes[i] << 16) | (bytes[i + 1] << 8);
-      x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) + alpha.charAt((b10 >> 6) & 0x3f) + padchar);
-      break;
-    default:
-      break;
-  }
-  return x.join('');
-};
-
-/* harmony default export */ __webpack_exports__["d"] = (utils);
-
-const log = function () {
-  // if (window.env !== 'dev') {
-    var arr = arguments
-    console.log.apply(null, arr)
-  // }
-}
-
-const logStore = {
-  store: [],
-  push: function () {
-    var ret = []
-    for(var k = 0, length3 = arguments.length; k < length3; k++){
-      ret.push(arguments[k])
-    }
-    this.store.push(ret.join(' + '))
-  },
-  flushInLine: function () {
-    var msg = []
-    if (this.store.length) {
-      console.log(this.store.join(' =--= '))
-    }
-    this.store = []
-  }
-}
-
-const assertUpdate = (metadata, task, cb1, cb2)=>{
-  // search file in metadata and check for last updatedAt
-  var passed = 'FAILED'
-  if (metadata.updatedAt < task.payload.timestamp) {
-    passed = 'PASSED '
-  }
-  logStore.push(['Asserting:timestamp:',passed, metadata.updatedAt , task.payload.timestamp, task.payload.timestamp - metadata.updatedAt])
-  if (metadata.updatedAt < task.payload.timestamp) {
-    cb1()
-  } else {
-    cb2()
-  }
-}
-
-
-
-
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var assign = make_assign()
@@ -300,14 +189,125 @@ function isObject(val) {
 	return val && {}.toString.call(val) === '[object Object]'
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export assertUpdate */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logStore; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return log; });
+var utils = {}
+utils.encodeBase64 = function(str) {
+  if(str.length === 0) {
+    return "";
+  }
+
+  // UTF-8 to byte array
+  var bytes = [], offset = 0, length, char;
+
+  str = encodeURI(str);
+  length = str.length;
+
+  while(offset < length) {
+    char = str[offset];
+    offset += 1;
+
+    if('%' !== char) {
+      bytes.push(char.charCodeAt(0));
+    }
+    else {
+      char = str[offset] + str[offset + 1];
+      bytes.push(parseInt(char, 16));
+      offset += 2;
+    }
+  }
+
+  // byte array to base64
+  var padchar = '=';
+  var alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+  var i, b10;
+  var x = [];
+
+  var imax = bytes.length - bytes.length % 3;
+
+  for(i = 0; i < imax; i += 3) {
+    b10 = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+    x.push(alpha.charAt(b10 >> 18));
+    x.push(alpha.charAt((b10 >> 12) & 0x3F));
+    x.push(alpha.charAt((b10 >> 6) & 0x3f));
+    x.push(alpha.charAt(b10 & 0x3f));
+  }
+  switch(bytes.length - imax) {
+    case 1:
+      b10 = bytes[i] << 16;
+      x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) + padchar + padchar);
+      break;
+    case 2:
+      b10 = (bytes[i] << 16) | (bytes[i + 1] << 8);
+      x.push(alpha.charAt(b10 >> 18) + alpha.charAt((b10 >> 12) & 0x3F) + alpha.charAt((b10 >> 6) & 0x3f) + padchar);
+      break;
+    default:
+      break;
+  }
+  return x.join('');
+};
+
+/* harmony default export */ __webpack_exports__["c"] = (utils);
+
+const log = function () {
+  // if (window.env !== 'dev') {
+    var arr = arguments
+    console.log.apply(null, arr)
+  // }
+}
+
+const logStore = {
+  store: [],
+  push: function () {
+    var ret = []
+    for(var k = 0, length3 = arguments.length; k < length3; k++){
+      ret.push(arguments[k])
+    }
+    this.store.push(ret.join(' + '))
+  },
+  flushInLine: function () {
+    var msg = []
+    if (this.store.length) {
+      console.log(this.store.join(' =--= '))
+    }
+    this.store = []
+  }
+}
+
+const assertUpdate = (metadata, task, cb1, cb2)=>{
+  // search file in metadata and check for last updatedAt
+  var passed = 'FAILED'
+  if (metadata.updatedAt < task.payload.timestamp) {
+    passed = 'PASSED '
+  }
+  logStore.push(['Asserting:timestamp:',passed, metadata.updatedAt , task.payload.timestamp, task.payload.timestamp - metadata.updatedAt])
+  if (metadata.updatedAt < task.payload.timestamp) {
+    cb1()
+  } else {
+    cb2()
+  }
+}
+
+
+
+
+
 
 /***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
 
 
 var gutil = {}
@@ -522,7 +522,7 @@ gutil.uploadFile= function uploadFile(fileId, parentId, content, cb, data) {
   var headers = {
     'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
   };
-  var base64Data = __WEBPACK_IMPORTED_MODULE_0__utils__["d" /* default */].encodeBase64(content);
+  var base64Data = __WEBPACK_IMPORTED_MODULE_0__utils__["c" /* default */].encodeBase64(content);
   var multipartRequestBody = [
     delimiter,
     'Content-Type: application/json\r\n\r\n',
@@ -566,10 +566,10 @@ gutil.uploadFile= function uploadFile(fileId, parentId, content, cb, data) {
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var engine = __webpack_require__(19)
+var engine = __webpack_require__(15)
 
-var storages = __webpack_require__(20)
-var plugins = [__webpack_require__(17)]
+var storages = __webpack_require__(16)
+var plugins = [__webpack_require__(13)]
 
 module.exports = engine.createStore(storages, plugins)
 
@@ -579,512 +579,7 @@ module.exports = engine.createStore(storages, plugins)
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
-const EXISTS = 1
-
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_chapters__ = __webpack_require__(11);
-
-
-
-
-//var newNote =  new Note('0B5nfwpxzN1PHazZ4MTFCX0U1OVk')
-function Note (id) {
-  this.noteId = id;
-
-  this.metadata = {}
-  this.noteMetaId = ''
-  // create a note.json if not already exists
-}
-
-var noteProto = Note.prototype;
-
-noteProto.init = function (cb) {
-  var self = this
-
-  // DEV ---------------------------
-  if (window.env === 'dev') {
-    var metadata = __WEBPACK_IMPORTED_MODULE_2__init_chapters__["a" /* default */]
-    __WEBPACK_IMPORTED_MODULE_2__init_chapters__["a" /* default */].noteId = self.noteId
-    self.metadata = metadata
-    setTimeout(()=>{
-      cb(null, self.metadata)
-      // CNote.init((res)=>{
-      //   cb(null, res)
-      // })
-    }, 1000)
-    return 
-  }
-  // DEV END -----------------------
-
-  // keep all task in sync otherwise theere will be inconsistencies bw local and remote
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('note.json', self.noteId, function (err, res) {
-    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(res.id, function (err, noteMeta, len) {
-      self.noteMetaId = res.id;
-      self.metadata = JSON.parse(noteMeta)
-      if (len === 0) {
-        self.metadata = {
-          updatedAt: ((new Date()).getTime()) - 1000000,
-          metaId: res.id,
-          noteId: self.noteId,
-          chapters: []
-        }
-      } else if (!self.metadata.chapters) {
-        self.metadata.chapters = []
-        self.metadata.metaId = res.id
-      }
-
-      if (!self.metadata.updatedAt) {
-        cb('Error: Note updatedAt prop not found!')
-      }
-      console.log(noteMeta)
-      console.log(self.metadata)
-
-      //  else if (noteMeta.chapters.) {
-      //   self.metadata.metaId = res.id;
-
-      //   if (!self.metadata.chapters) {
-      //     self.metadata.chapters = []
-      //   }
-      // }else{
-      //   self.metadata = JSON.parse(noteMeta);
-      //   if (!self.metadata.chapters) {
-      //     self.metadata.chapters = []
-      //   }
-      // }
-
-      if (err) {
-        cb(err, self.metadata)
-        return
-      }
-
-      cb(null, self.metadata)
-      // show all structure
-      // start the noteApp
-    })
-  })
-}
-
-noteProto.getChapters = function (cb) {
-  // get from metadata
-  cb(this.metadata.chapters)
-}
-
-noteProto.getTopics = function (chapterId, cb) {
-  // update metadata
-  // upload the note.json
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.id === chapterId) {
-      cb(chapter.topics)
-      return
-    }
-  }
-}
-
-noteProto.createChapterSync = function (name, cb) {
-  // DEV ---------------------------
-  if (window.env === 'dev') {
-    // CNote.createChapter(name, function (id) {
-    //   cb(null, {id})
-    // })
-    setTimeout(()=>{
-      cb(null, {id: Math.floor(Math.random()*1000)})
-    }, 500)
-    return
-  }
-  // update metadata
-  // upload the note.json
-  var self = this;
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.name === (name + '.chapter')) {
-      console.log('chapter already exists');
-      cb(chapter, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* EXISTS */])
-      return
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createDirWithExt(this.noteId, name, '.chapter', function (err, res) {
-    if (err) {cb(err); return}
-    cb(null, res)
-  });
-}
-
-noteProto.createChapterIntroSync = function (id, name, cb) {
-  var self = this
-  if (window.env === 'dev') {
-    // DEV:COMM: create localStore intro.md if not already exists
-    
-    // self.metadata.chapters.forEach((chapter)=>{
-    //   if (chapter.id === id) {
-    //     if (chapter.introId === res.id) {
-    //       setTimeout(()=>{
-    //         cb(null, self.metadata)
-    //       }, 1000)
-    //       return
-    //     }
-    //   }
-    // });
-
-    var introId =  Math.floor(Math.random()*1000)
-    self.metadata.chapters.push({
-      name: name,
-      id: id,
-      introId,
-      topics: []
-    })
-    setTimeout(()=>{
-      cb(null, self.metadata, introId)
-    }, 1000)
-    return
-  }
-  // create introduction file
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('intro.md', id, function (err, res) {
-    // save the metadata
-
-    // if intro.md created but not saved in metadata
-    self.metadata.chapters.forEach((chapter)=>{
-      if (chapter.id === id) {
-        if (chapter.introId === res.id) {
-          cb(null, self.metadata, res.id)
-          return
-        }
-      }
-    });
-
-    self.metadata.chapters.push({
-      name: name,
-      id: id,
-      introId: res.id,
-      topics: []
-    })
-    console.log(self.metadata)
-    cb(null, self.metadata, res.id) // saved afterwards
-    // save the note metadata
-    // self.updateNoteMetadata(cb, );
-  });
-}
-
-noteProto.createChapter = function (name, cb) {
-  // update metadata
-  // upload the note.json
-  var self = this;
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.name === (name + '.chapter')) {
-      console.log('chapter already exists');
-      cb(chapter, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* EXISTS */])
-      return
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createDirWithExt(this.noteId, name, '.chapter', function (err, res1) {
-    if (err) {cb(err); return}
-    
-    // create introduction file
-    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('intro.md', res1.id, function (err, res2) {
-      // save the metadata
-      self.metadata.chapters.push({
-        name: res1.name,
-        id: res1.id,
-        introId: res2.id,
-        topics: []
-      })
-      // save the note metadata
-      var fn = function () {
-        
-      }
-      self.updateNoteMetadata(cb, {chapter: res1, intro: res2});
-    });
-
-  });
-}
-
-noteProto.createTopic = function (chapterId, name, cb) {
-  var chapterIndex = -1;
-  var self = this;
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.id === chapterId) { // found chapter
-      chapterIndex = i;
-      for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-        var topic = chapter.topics[j];
-        if (topic.name === name) { // found topic
-          console.log('topic already exists');
-          cb(chapter, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* EXISTS */])
-          return
-        }
-      }
-
-      break
-    }
-  }
-
-  if (chapterIndex === -1) {return}
-
-  // create the chapter
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists(name+'.md', chapterId, function (err, res) {
-    // save the metadata
-    var chapter = self.metadata.chapters[chapterIndex]
-    chapter.topics.push({
-      name: res.name,
-      id: res.id,
-    })
-
-    // save the metadata
-    self.updateNoteMetadata(cb, {topic: res});
-  });
-}
-
-noteProto.createTopicSync = function (chapterId, name, cb) {
-  // DEV ---------------------------
-    if (window.env === 'dev') {
-      setTimeout(()=>{
-        cb(null, null, Math.floor(Math.random()*1000))
-      }, 1000)
-      return
-    }
-
-    var chapterIndex = -1;
-    var self = this;
-    for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-      var chapter = this.metadata.chapters[i];
-      if (chapter.id === chapterId) { // found chapter
-        chapterIndex = i;
-        for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-          var topic = chapter.topics[j];
-          if (topic.name === name) { // found topic
-            console.log('topic already exists');
-            cb(null, self.metadata, topic.id)
-            return
-          }
-        }
-
-        break
-      }
-    }
-
-    if (chapterIndex === -1) {return}
-
-    // create the chapter
-    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists(name+'.md', chapterId, function (err, res) {
-      // save the metadata
-      var chapter = self.metadata.chapters[chapterIndex]
-      chapter.topics.push({
-      name: res.name,
-      id: res.id,
-    })
-
-    cb(null, self.metadata, res.id)
-    // save the metadata
-    // self.updateNoteMetadata(cb, {topic: res});
-  });
-}
-
-noteProto.getTopicData = function (topicId, cb) {
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(topicId, cb);
-}
-
-noteProto.updateTopic = function (id, data, cb) {
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].uploadFile(id, '/', data, cb);
-}
-
-noteProto.deleteChapter = function (id, cb) {
-  var flag = 0;
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    if (chapter.id  === id) {
-      //matched id 
-      this.metadata.chapters.splice(k, 1);
-      flag = 1
-      break
-    }
-  }
-  if (flag) {
-    this.updateNoteMetadata((res)=>{
-      // delete the topic-name.md file
-      __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
-    })
-  }
-}
-
-/**
- * 1. deleteChapterSync
- * 2. updateMetadata
- * 3. deleteFile
- */
-
-noteProto.deleteChapterSync = function (id, cb) {
-  var flag = 0;
-  var self = this
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    console.log(chapter.id, id, chapter.id === id)
-    if (chapter.id == id) {
-      //matched id 
-      this.metadata.chapters.splice(k, 1);
-      flag = 1
-      break
-    }
-  }
-  if (flag) {
-    cb(null, self.metadata) // saved later
-  } else {
-    cb('Chapter with id => '+ id + ' not found', self.metadata)
-  }
-}
-
-noteProto.deleteTopic = function (id, cb) {
-  var flag = 0;
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-      var topic = chapter.topics[j];
-      if (topic.id  === id) {
-        chapter.topics.splice(j, 1);
-        //matched id 
-        console.log(j)
-        flag = 1
-        break
-      }
-    }
-    if (flag) {break}
-  }
-  if (flag) {
-    this.updateNoteMetadata((res)=>{
-      // delete the topic-name.md file
-      __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
-    })
-  }
-}
-
-/**
- * 1. deleteTopicSync
- * 2. updateMetadata
- * 3. deleteFile
- */
-
-noteProto.deleteTopicSync= function (id, cb) {
-  var flag = 0;
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-      var topic = chapter.topics[j];
-      if (topic.id  === id) {
-        chapter.topics.splice(j, 1);
-        //matched id 
-        console.log(j)
-        flag = 1
-        break
-      }
-    }
-    if (flag) {break}
-  }
-  if (flag) {
-    cb(null, self.metadata) // saved later
-    // this.updateNoteMetadata((res)=>{
-      // delete the topic-name.md file
-      // gutil.deleteFile(id, cb);
-    // })
-  } else {
-    cb('Topic with id:'+ id + ' not found', self.metadata)
-  }
-}
-
-noteProto.updateNoteMetadata = function (cb, data) {
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].uploadFile(this.noteMetaId, '/', JSON.stringify(this.metadata), cb, data);
-}
-
-noteProto.updateNoteMetadataSync = function (data, cb) {
-  if (window.env === 'dev') {
-    setTimeout(()=>{
-      // CNote.saveMetadata(data)
-      cb(null, 'dev metadata updated.')
-    }, 1000)
-    return
-  }
-  self.metadata = data
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].uploadFile(this.noteMetaId, '/', JSON.stringify(data), cb);
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (Note);
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return updateMetadata; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return updateTopicRemoteId; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return updateChapterRemmoteId; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-
-
-
-const updateFutureTask = function (self, cb) {
-  for (var i = 0; i < self.tasks.length; i++) {
-    cb(self.tasks[i])
-  }
-  // update localStorage
-  __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('tasks', self.tasks)
-}
-
-const updateChapterRemmoteId = function (self, localId, remoteId) {
-  updateFutureTask(self, (task)=>{
-    if (task.payload.chapterLocalId === localId) {
-      task.payload.chapterRemoteId = remoteId
-      __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push(task.type)
-    }
-  })
-}
-
-const updateTopicRemoteId = function (self, localId, remoteId) {
-  updateFutureTask(self, (task)=>{
-    if (task.payload.topicLocalId === localId) {
-      task.payload.topicRemoteId = remoteId
-      __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push(task.type)
-    }
-  });
-}
-
-const updateMetadata = function (self, noteId, metadata) {
-  console.log([].concat(self.tasks))
-  updateFutureTask(self, (task)=>{
-    console.log(noteId, task, noteId === task.payload.noteId)
-    if (task.type === '@UPDATE_METADATA') {
-      console.log(noteId, task, noteId === task.payload.noteId)
-      if (task.payload.noteId === noteId) {
-        console.log('Updating future metadata....')
-        task.payload.metadata = metadata
-        __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
-      }
-    }
-  });
-}
-
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(2);
 
 
@@ -1190,7 +685,7 @@ NoteBook.prototype.updateNoteBookMetadata = function (cb) {
 /* harmony default export */ __webpack_exports__["a"] = (NoteBook);
 
 /***/ }),
-/* 8 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1348,7 +843,7 @@ function handleGauthLoad (cb) {
 
 
 /***/ }),
-/* 9 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1359,7 +854,7 @@ function handleGauthLoad (cb) {
 /* unused harmony export testCreateTopic */
 /* unused harmony export testDeleteTopic */
 /* unused harmony export testUpdateTopic */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(9);
 
 window.syncSave = __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */]
 
@@ -1490,13 +985,13 @@ const testUpdateChapterIntro = ()=>{
 
 
 /***/ }),
-/* 10 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(1);
 
 
 
@@ -1616,322 +1111,43 @@ const addTask = function (self, task){
 /* harmony default export */ __webpack_exports__["a"] = (addTask);
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  chapters: [
-    {
-      name: 'gapi chap 1',
-      id: '1',
-      topics: [
-        {
-          name: 'gapi topic 1',
-          id: '2',
-        }
-      ]
-    },
-    {
-      name: 'gapi chap 2',
-      id: '2',
-      topics: []
-    },
-    {
-      name: 'gapi chap 3',
-      id: '3',
-      topics: []
-    }
-  ]
-});
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
+const EXISTS = 1
+
+
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(11);
 
 // import syncGet from './sync/syncSave'
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__sync_syncSave__["a" /* default */]);
 
 /***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 10 */
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(14);
-
-
-
-
-
-const execute =  function (self) {
-  var noteId = ''
-  var noteId = ''
-
-  __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* logStore */].push([self.tasks.length])
-  var task = self.tasks[0]
-  // update localStorage
-  if (task.message) {
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(task.message)
-  }
-
-  console.error('TASK => '+task.type, task.payload)
-
-  switch (task.type) {
-    case '@CREATE_NOTE':
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__note_cases__["a" /* caseCreateNote */])(self, task)
-        // setTimeout(()=>{
-        //   log('Create a note from id ', task.payload.noteId)
-        //   self.note.noteId = task.payload.noteId
-        //   self.next()
-        // }, 200)
-      break
-
-    case '@CREATE_CHAPTER_FILE': // => @CREATE_CHAPTER_INTRO_FILE
-      console.log(self.tasks)
-      self.assertNote(task, ()=>{
-        // console.log(self.note.metadata)
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> New chapter created')
-          self.note.createChapterSync(task.payload.name, (err, res)=>{
-            
-            __WEBPACK_IMPORTED_MODULE_0__utils__["b" /* logStore */].flushInLine() // flush messages
-
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["a" /* updateChapterRemmoteId */])(self, task.payload.chapterLocalId, res.id)
-            self.next()
-          })
-          // updateChapterRemmoteId(self, task.payload.chapterLocalId, id)
-          // self.next()
-        }, ()=>{
-          self.next(1)
-        })
-
-        // setTimeout(()=>{
-        //   // update all remoteChapteId
-        //   var id = Math.random(); id *= 100; id = Math.floor(id);
-        //   updateChapterRemmoteId(self, task.payload.chapterLocalId, id)
-        //   self.next()
-        // }, 200)
-      })
-      break 
-
-    case '@CREATE_CHAPTER_INTRO_FILE': // => @UPDATE_METADATA
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          self.note.createChapterIntroSync(task.payload.chapterRemoteId, task.payload.name, (err, metadata)=>{
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter intro file created.')
-            // log(metadata)
-            // get the introId and update others
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, self.note.metadata)
-            self.next()
-          })
-        }, ()=>{
-          self.next(1)
-        })
-      })
-      break
-
-    case '@UPDATE_CHAPTER_INTRO_FILE':
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          self.note.updateTopic(task.payload.introId, 'Updated inro', (err, res)=>{
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter intro data updated')
-            // update file
-            // assign metadata update
-            // updateMetadata(self, task.payload.noteId, self.note.metadata)
-            self.next()
-          })
-        }, ()=>{
-          self.next(1)
-        })
-
-        // setTimeout(()=>{
-        //   self.next()
-        // }, 200)
-      })
-      break
-
-    case '@DISABLE_CHAPTER':
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter disabled')
-        // updateMetadata(self, task.payload.noteId, self.note.metadata)
-        setTimeout(()=>{
-          self.next()
-        }, 200)
-      })
-      break
-
-    case '@DELETE_CHAPTER_CREATE_METADATA':
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          console.log(task.payload)
-          self.note.deleteChapterSync(task.payload.chapterRemoteId, (err, metadata)=>{
-            if (err) { __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(err); return }
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter delete metadata created')
-            console.log(metadata)
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
-            self.next()
-          })
-        }, ()=>{
-          self.next(1)
-        })
-      })
-      break
-
-    case '@CREATE_TOPIC_FILE':  // => @UPDATE_METADATA
-
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> New topic created')
-          self.note.createTopicSync(task.payload.topicRemoteId, task.payload.name, (err, metadata, id)=>{
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["c" /* updateTopicRemoteId */])(self, task.payload.topicLocalId, id)
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, task.payload.noteId, self.note.metadata) // for DEV metadata === null
-            self.next()
-          })
-        }, ()=>{
-          self.next(1)
-        })
-
-        // setTimeout(()=>{
-        //   var id = Math.random(); id *= 100; id = Math.floor(id);
-        //   updateTopicRemoteId(self, task.payload.topicLocalId, id)
-        //   self.next()
-        // }, 200)
-      })
-      break
-
-    case '@UPDATE_TOPIC_FILE':
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Topic data updated')
-          self.note.updateTopic(task.payload.topicRemoteId, task.payload.markdownText, (err, res)=>{
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, task.payload.noteId, self.note.metadata)
-            self.next()
-          })
-        }, ()=>{ // skip task
-          self.next(1)
-        })
-        
-        // log('Topic data updated')
-        // setTimeout(()=>{
-        //   self.next()
-        // }, 200)
-      })
-      break // => @UPDATE_METADATA
-
-    case '@DISABLE_TOPIC':
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Topic disabled')
-        setTimeout(()=>{
-          self.next()
-        }, 1000)
-      })
-      break
-
-    case '@DELETE_TOPIC_CREATE_METADATA':
-      self.assertNote(task, ()=>{
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          self.note.deleteTopicSync(task.payload.topicRemoteId, (err, metadata)=>{
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
-            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Topic delete metadata created')
-            self.next()
-          })
-        }, ()=>{
-          self.next(1)
-        })
-      })
-      break
-
-    case '@DELETE_CHAPTER_FILE':
-      self.next()
-      // caseUpdateMetadata(self, task)
-      break // using metaId
-
-    case '@DELETE_TOPIC_FILE':
-      self.next()
-      // caseUpdateMetadata(self, task)
-      break // using metaId
-
-    case '@UPDATE_METADATA':
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__note_cases__["b" /* caseUpdateMetadata */])(self, task)
-      break // using metaId
-
-    default:
-      console.info('=> No task given')
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (execute);
+throw new Error("Module parse failed: /home/subhasis/DEV/WEBPACK/async_gapi/app/gapi/sync/execute.js Unsyntactic break (196:6)\nYou may need an appropriate loader to handle this file type.\n| \n|       // caseUpdateMetadata(self, task)\n|       break // using metaId\n| \n|     case '@DELETE_TOPIC_FILE':");
 
 /***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return caseCreateNote; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return caseUpdateMetadata; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__element_note__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(6);
-
-
-
-
-const caseCreateNote = (self, task) => {
-  if (self.note.noteId === task.payload.noteId) {
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(' -> Requested note already exists')
-    self.next(1)
-  } else {
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(' -> Create a note from id ', task.payload.noteId)
-    window.note = self.note = new __WEBPACK_IMPORTED_MODULE_0__element_note__["a" /* default */](task.payload.noteId)
-    self.note.init((err, metadata)=>{
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(metadata)
-      self.note.metadata = metadata
-      self.note.metadata.updatedAt = self.timeStamp() - 10000
-      self.next()
-    })
-  }
-}
-
-const caseUpdateMetadata = (self, task)=>{
-  self.assertNote(task, ()=>{
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-      var metadata = Object.assign({}, task.payload.metadata)
-      metadata.updatedAt = task.payload.timestamp
-      self.note.updateNoteMetadataSync(metadata, (err, res)=>{
-        console.log(metadata)
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(' -> Metadata updated.', res)
-        self.next()
-      })
-    }, ()=>{
-      console.log(' --> Skipping metadata update.')
-      self.next(1)
-    })
-    // log('Metadata updated')
-    // setTimeout(()=>{
-    //   self.next()
-    // }, 200)
-  })
-}
-
-
-
-/***/ }),
-/* 15 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__execute__);
 
 
 
@@ -2015,21 +1231,21 @@ const async = {
     this.execute()
   },
   execute: function () {
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__execute__["a" /* default */])(this)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__execute__["default"])(this)
   }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (async);
 
 /***/ }),
-/* 16 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__ = __webpack_require__(4);
 window.env = 'prod'
 
 
@@ -2068,19 +1284,19 @@ if (window.env !== 'dev') {
 
 
 /***/ }),
-/* 17 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = json2Plugin
 
 function json2Plugin() {
-	__webpack_require__(18)
+	__webpack_require__(14)
 	return {}
 }
 
 
 /***/ }),
-/* 18 */
+/* 14 */
 /***/ (function(module, exports) {
 
 //  json2.js
@@ -2591,10 +1807,10 @@ if (typeof JSON !== "object") {
 }());
 
 /***/ }),
-/* 19 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(1)
+var util = __webpack_require__(0)
 var slice = util.slice
 var pluck = util.pluck
 var each = util.each
@@ -2813,29 +2029,29 @@ function createStore(storages, plugins) {
 
 
 /***/ }),
-/* 20 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
 	// Listed in order of usage preference
-	'localStorage': __webpack_require__(22),
-	'oldFF-globalStorage': __webpack_require__(24),
-	'oldIE-userDataStorage': __webpack_require__(25),
-	'cookieStorage': __webpack_require__(21),
-	'sessionStorage': __webpack_require__(26),
-	'memoryStorage': __webpack_require__(23),
+	'localStorage': __webpack_require__(18),
+	'oldFF-globalStorage': __webpack_require__(20),
+	'oldIE-userDataStorage': __webpack_require__(21),
+	'cookieStorage': __webpack_require__(17),
+	'sessionStorage': __webpack_require__(22),
+	'memoryStorage': __webpack_require__(19),
 }
 
 
 /***/ }),
-/* 21 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // cookieStorage is useful Safari private browser mode, where localStorage
 // doesn't work but cookies do. This implementation is adopted from
 // https://developer.mozilla.org/en-US/docs/Web/API/Storage/LocalStorage
 
-var util = __webpack_require__(1)
+var util = __webpack_require__(0)
 var Global = util.Global
 var trim = util.trim
 
@@ -2895,10 +2111,10 @@ function _has(key) {
 
 
 /***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(1)
+var util = __webpack_require__(0)
 var Global = util.Global
 
 module.exports = {
@@ -2939,7 +2155,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 23 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // memoryStorage is a useful last fallback to ensure that the store
@@ -2984,14 +2200,14 @@ function clearAll(key) {
 
 
 /***/ }),
-/* 24 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldFF-globalStorage provides storage for Firefox
 // versions 6 and 7, where no localStorage, etc
 // is available.
 
-var util = __webpack_require__(1)
+var util = __webpack_require__(0)
 var Global = util.Global
 
 module.exports = {
@@ -3032,14 +2248,14 @@ function clearAll() {
 
 
 /***/ }),
-/* 25 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldIE-userDataStorage provides storage for Internet Explorer
 // versions 6 and 7, where no localStorage, sessionStorage, etc
 // is available.
 
-var util = __webpack_require__(1)
+var util = __webpack_require__(0)
 var Global = util.Global
 
 module.exports = {
@@ -3165,10 +2381,10 @@ function _makeIEStorageElFunction() {
 
 
 /***/ }),
-/* 26 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var util = __webpack_require__(1)
+var util = __webpack_require__(0)
 var Global = util.Global
 
 module.exports = {
@@ -3209,7 +2425,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 27 */
+/* 23 */
 /***/ (function(module, exports) {
 
 var g;
