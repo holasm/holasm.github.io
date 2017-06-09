@@ -1931,22 +1931,20 @@ const async = {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(6);
+throw new Error("Cannot find module \"./gapi/notebook\"");
 window.env = 'prod'
 
 
 
-// import Note from './gapi/note'
-// import NoteBook from './gapi/notebook'
+
 
 window.NB = {}
-
-window.NN = Note
 
 if (window.env === 'dev') {
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__["a" /* default */])((err, res)=>{
     console.log('Authorized')
     console.log(err, res)
-    NB = new NoteBook(res.id)
+    NB = new __WEBPACK_IMPORTED_MODULE_2__gapi_notebook___default.a(res.id)
     NB.init((err, res)=>{
       console.log(res)
     })
