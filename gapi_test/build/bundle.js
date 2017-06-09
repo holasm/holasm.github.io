@@ -628,19 +628,20 @@ noteProto.init = function (cb) {
   // keep all task in sync otherwise theere will be inconsistencies bw local and remote
   __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('note.json', self.noteId, function (err, res) {
     __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(res.id, function (err, noteMeta, len) {
-      self.noteMetaId = res.id;
+      self.noteMeta = JSON.parse(noteMeta)
+      self.metadata = self.noteMetaId = res.id;
       if (len === 0) {
         self.metadata = {
           updatedAt: ((new Date()).getTime()) - 1000000,
           metaId: res.id,
           chapters: []
         }
-      } else if (!noteMeta.chapters) {
-        noteMeta.chapters = []
-        noteMeta.metaId = res.id
-        self.metadata = noteMeta
+      } else if (!self.noteMeta.chapters) {
+        self.noteMeta.chapters = []
+        self.noteMeta.metaId = res.id
+        self.metadata = self.noteMeta
       }
-      if (!noteMeta.updatedAt) {
+      if (!self.noteMeta.updatedAt) {
         cb('Error: Note updatedAt prop not found!')
       }
 
