@@ -1504,7 +1504,6 @@ const testUpdateChapterIntro = ()=>{
 
 
 const addTask = function (self, task){
-  setTimeout(()=>{
     __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('updateRemaining', true)
     task.payload.timestamp = self.timeStamp()
     var _task = Object.assign({}, task)
@@ -1634,8 +1633,6 @@ const addTask = function (self, task){
     if (!self.running) {
       self.run()
     }
-  }, 50)
-
   // setTimeout(()=>{
   // }, 100)
 }
