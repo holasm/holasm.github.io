@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -300,16 +300,16 @@ function isObject(val) {
 	return val && {}.toString.call(val) === '[object Object]'
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var engine = __webpack_require__(17)
+var engine = __webpack_require__(18)
 
-var storages = __webpack_require__(18)
-var plugins = [__webpack_require__(15)]
+var storages = __webpack_require__(19)
+var plugins = [__webpack_require__(16)]
 
 module.exports = engine.createStore(storages, plugins)
 
@@ -319,9 +319,9 @@ module.exports = engine.createStore(storages, plugins)
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_chapters__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_chapters__ = __webpack_require__(10);
 
 
 
@@ -736,411 +736,6 @@ noteProto.updateNoteMetadataSync = function (data, cb) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return updateMetadata; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return updateTopicRemoteId; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return updateChapterRemmoteId; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-
-
-
-const updateFutureTask = function (self, cb) {
-  self.tasks.forEach(function(task) {
-    cb(task)
-  });
-  // update localStorage
-  __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('tasks', self.tasks)
-}
-
-const updateChapterRemmoteId = function (self, localId, remoteId) {
-  updateFutureTask(self, (task)=>{
-    if (task.payload.chapterLocalId === localId) {
-      task.payload.chapterRemoteId = remoteId
-      __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push(task.type)
-    }
-  })
-}
-
-const updateTopicRemoteId = function (self, localId, remoteId) {
-  updateFutureTask(self, (task)=>{
-    if (task.payload.topicLocalId === localId) {
-      task.payload.topicRemoteId = remoteId
-      __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push(task.type)
-    }
-  });
-}
-
-const updateMetadata = function (self, noteId, metadata) {
-  updateFutureTask(self, (task)=>{
-    if (task.type === '@UPDATE_METADATA') {
-      if (task.payload.noteId === noteId) {
-        task.payload.metadata = metadata
-        __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
-      }
-    }
-  });
-}
-
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return testIncompleteTaskLoading; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return testCreateChapter; });
-/* unused harmony export testUpdateChapterIntro */
-/* unused harmony export testDeleteChapter */
-/* unused harmony export testCreateTopic */
-/* unused harmony export testDeleteTopic */
-/* unused harmony export testUpdateTopic */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(10);
-
-window.syncSave = __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */]
-
-const testIncompleteTaskLoading = ()=>{
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].loadTasks()
-}
-
-const testCreateNote = ()=>{
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
-    type: 'CREATE_NOTE',
-    payload: {
-      noteId: 1
-    }
-  })
-}
-
-const testCreateChapter = ()=>{
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
-    type: 'CREATE_CHAPTER',
-    payload: {
-      noteId: 1,
-      name: 'chapter 1',
-      chapterLocalId: '1',
-    }
-  })
-}
-
-const testDeleteChapter = ()=>{
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
-    type: 'DELETE_CHAPTER',
-    payload: {
-      noteId: 1,
-      name: 'chapter 1',
-      chapterLocalId: '1',
-      chapterRemoteId: '1',
-    }
-  }) 
-}
-
-const testCreateTopic = ()=>{
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
-    type: 'CREATE_TOPIC',
-    payload: {
-      noteId: 3,
-      name: 'topic 1',
-      topicLocalId: '2',
-      chapterLocalId: '1',
-      chapterRemoteId: '-'
-    }
-  })
-}
-
-const testUpdateTopic = ()=>{  
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
-    type: 'UPDATE_TOPIC_DATA',
-    payload: {
-      noteId: 2,
-      topicLocalId: '1',
-      topicRemoteId: '1',
-      htmlText: '<span>topic id update text</span>'
-    }
-  })
-}
-
-const testDeleteTopic = ()=>{  
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
-    type: 'DELETE_TOPIC',
-    payload: {
-      noteId: 2,
-      chapterLocalId: '1',
-      chapterRemoteId: '1.remote',
-      topicLocalId: '2',
-      topicRemoteId: '2.remote',
-    }
-  })
-}
-
-const testUpdateChapterIntro = ()=>{  
-  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
-    type: 'UPDATE_CHAPTER_INTRO_FILE',
-    payload: {
-      noteId: 2,
-      chapterRemoteId: '-',
-      chapterLocalId: '2',
-      introId: '2',
-      htmlText: '<span>topic id update text</span>'
-    }
-  })
-}
-
-//   syncSave.addTask({
-//     type: 'DISABLE_CHAPTER',
-//     payload: {
-//       noteId: 2,
-//       chapterLocalId: '1',
-//       chapterRemoteId: '-',
-//     }
-//   })
-
-//   syncSave.addTask({
-//     type: 'DISABLE_TOPIC',
-//     payload: {
-//       noteId: 2,
-//       topicLocalId: '2',
-//       topicRemoteId: '-',
-//     }
-//   })
-
-//   syncSave.addTask({
-//     type: 'UPDATE_METADATA',
-//     payload: {
-//       noteId: 8,
-//       metadata: 'metadata :)'
-//     }
-//   })
-
-//   syncSave.addTask({
-//     type: 'DISABLE_TOPIC',
-//     payload: {
-//       noteId: 3,
-//       topicLocalId: '2',
-//       topicRemoteId: '-'
-//     }
-//   })
-// }
-
-
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-
-
-
-const addTask = function (self, task){
-  setTimeout(()=>{
-    __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('updateRemaining', true)
-    task.payload.timestamp = self.timeStamp()
-    var _task = Object.assign({}, task)
-      switch (task.type) {
-        case 'CREATE_CHAPTER':
-          // create extrea jobs
-          addTask(self, {
-            type: '@CREATE_CHAPTER_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              name: _task.payload.name,
-              chapterLocalId: _task.payload.chapterLocalId,
-            }
-          })
-
-          addTask(self, {
-            type: '@CREATE_CHAPTER_INTRO_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              name: _task.payload.name,
-              chapterLocalId: _task.payload.chapterLocalId,
-            }
-          })
-
-          addTask(self, {
-            type: 'UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            }
-          })
-          break;
-
-        case 'CREATE_TOPIC':
-          // create extrea jobs
-          addTask(self, {
-            type: '@CREATE_TOPIC_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              name: _task.payload.name,
-              chapterLocalId: _task.payload.chapterLocalId,
-              topicLocalId: _task.payload.topicLocalId,
-            }
-          })
-          addTask(self, {
-            type: 'UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            }
-          })
-          break;
-
-        case 'DELETE_TOPIC':
-          addTask(self, {
-            type: '@DELETE_TOPIC_CREATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-              topicLocalId: _task.payload.topicLocalId,
-              topicRemoteId: _task.payload.topicRemoteId,
-            }
-          })
-
-          addTask(self, {
-            type: '@UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            }
-          })
-
-          addTask(self, {
-            type: '@DELETE_TOPIC_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-              topicLocalId: _task.payload.topicLocalId,
-              topicRemoteId: _task.payload.topicRemoteId,
-            }
-          })
-          break
-
-        case 'DELETE_CHAPTER':
-          addTask(self, {
-            type: '@DELETE_CHAPTER_CREATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-            }
-          })
-          addTask(self, {
-            type: '@UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            }
-          })
-
-          addTask(self, {
-            type: '@DELETE_CHAPTER_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-            }
-          })
-          break
-
-        case 'UPDATE_CHAPTER_INTRO_FILE':
-          task.type = '@'+task.type
-          addTask(self, task)
-          addTask(self, {
-            type: '@UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            } 
-          })
-          break
-
-        case 'UPDATE_TOPIC_DATA':
-          task.type = '@UPDATE_TOPIC_FILE'
-          addTask(self, task)
-          addTask(self, {
-            type: '@UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            } 
-          })
-          break
-
-        default:
-          if (_task.type[0] !== '@') {
-            _task.type = '@'+task.type
-          }
-          self.tasks.push(_task)
-          // update localStorage
-          __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('tasks', self.tasks)
-          break;
-    }
-
-    if (!self.running) {
-      self.run()
-    }
-  }, 50)
-
-  // setTimeout(()=>{
-  // }, 100)
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (addTask);
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
-const EXISTS = 1
-
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  chapters: [
-    {
-      name: 'gapi chap 1',
-      id: '1',
-      topics: [
-        {
-          name: 'gapi topic 1',
-          id: '2',
-        }
-      ]
-    },
-    {
-      name: 'gapi chap 2',
-      id: '2',
-      topics: []
-    },
-    {
-      name: 'gapi chap 3',
-      id: '3',
-      topics: []
-    }
-  ]
-});
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
 
 
@@ -1397,25 +992,588 @@ gutil.uploadFile= function uploadFile(fileId, parentId, content, cb, data) {
 /* harmony default export */ __webpack_exports__["a"] = (gutil);
 
 /***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return updateMetadata; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return updateTopicRemoteId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return updateChapterRemmoteId; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
+
+
+
+const updateFutureTask = function (self, cb) {
+  self.tasks.forEach(function(task) {
+    cb(task)
+  });
+  // update localStorage
+  __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('tasks', self.tasks)
+}
+
+const updateChapterRemmoteId = function (self, localId, remoteId) {
+  updateFutureTask(self, (task)=>{
+    if (task.payload.chapterLocalId === localId) {
+      task.payload.chapterRemoteId = remoteId
+      __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push(task.type)
+    }
+  })
+}
+
+const updateTopicRemoteId = function (self, localId, remoteId) {
+  updateFutureTask(self, (task)=>{
+    if (task.payload.topicLocalId === localId) {
+      task.payload.topicRemoteId = remoteId
+      __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push(task.type)
+    }
+  });
+}
+
+const updateMetadata = function (self, noteId, metadata) {
+  updateFutureTask(self, (task)=>{
+    if (task.type === '@UPDATE_METADATA') {
+      if (task.payload.noteId === noteId) {
+        task.payload.metadata = metadata
+        __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
+      }
+    }
+  });
+}
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gutil__ = __webpack_require__(4);
+
+
+function handleGauthLoad (cb) {
+
+  // var API_KEY = 'AIzaSyCnqibBifAO42IHtgSudez0c4GSHji4N2Q';
+  
+  // Client ID and API key from the Developer Console
+  var CLIENT_ID = '55687462140-lbbgd3qj5famftfafi9f5b2bdn03nu6p.apps.googleusercontent.com';
+
+  // Array of API discovery doc URLs for APIs used by the quickstart
+  var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+
+  // Authorization scopes required by the API; multiple scopes can be
+  // included, separated by spaces.
+  var SCOPE = 'https://www.googleapis.com/auth/drive';
+
+  // var authorizeButton = document.getElementById('authorize-button');
+  // var signoutButton = document.getElementById('signout-button');
+
+  /**
+   *  On load, called to load the auth2 library and API client library.
+   */
+  
+  window.gapi.load('client:auth2', initClient);
+
+  /**
+   *  Initializes the API client library and sets up sign-in state
+   *  listeners.
+   */
+  function initClient() {
+    window.gapi.client.init({
+      discoveryDocs: DISCOVERY_DOCS,
+      clientId: CLIENT_ID,
+      scope: SCOPE
+    }).then(function () {
+      // Listen for sign-in state changes.
+      window.gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+      // Handle the initial sign-in state.
+      updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+      // authorizeButton.onclick = handleAuthClick;
+      // signoutButton.onclick = handleSignoutClick;
+      window.signIn = ()=>{handleAuthClick();}
+      window.signOut = ()=>{handleSignoutClick();}
+    });
+  }
+
+  /**
+   *  Called when the signed in status changes, to update the UI
+   *  appropriately. After a sign-in, the API is called.
+   */
+  function updateSigninStatus(isSignedIn, cb1, cb2) {
+    if (isSignedIn) {
+      onGauth();
+      if (cb1) { cb1() }
+    } else {
+      if (cb2) { cb2() }
+    }
+  }
+
+  function onGauth() {
+    // create a root folder if not exists
+    __WEBPACK_IMPORTED_MODULE_0__gutil__["a" /* default */].createDirIfNotExists('LifeNotes', '/', function (err, res) {
+      // startApp(rootId);
+      if (err) {
+        cb(err, res)
+        return
+      }
+      cb(null, res)
+    })
+  }
+
+  /**
+   *  Sign in the user upon button click.
+   */
+  function handleAuthClick(event) {
+    window.gapi.auth2.getAuthInstance().signIn();
+  }
+
+  /**
+   *  Sign out the user upon button click.
+   */
+  function handleSignoutClick(event) {
+    window.gapi.auth2.getAuthInstance().signOut();
+  }
+
+  /**
+   * Append a pre element to the body containing the given message
+   * as its text node. Used to display the results of the API call.
+   *
+   * @param {string} message Text to be placed in pre element.
+   */
+  // function appendPre(message) {
+  //   var pre = document.getElementById('content');
+  //   var textContent = document.createTextNode(message + '\n');
+  //   pre.appendChild(textContent);
+  // }
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (handleGauthLoad);
+
+/**
+ * Print files.
+ */
+// function listFiles() {
+//   window.gapi.client.drive.files.list({
+//     'pageSize': 100,
+//     'fields': "nextPageToken, files(id, name)"
+//   }).then(function(response) {
+//     appendPre('Files:');
+//     var files = response.result.files;
+//     if (files && files.length > 0) {
+//       for (var i = 0; i < files.length; i++) {
+//         var file = files[i];
+//         appendPre(file.name + ' (' + file.id + ')');
+//       }
+//     } else {
+//       appendPre('No files found.');
+//     }
+//   });
+// }
+
+// 2
+// function startApp(res) {
+//   console.log(res);
+//   window.nb = new NoteBook(res.id);
+//   // createANote(rootDirId, 'hellomoto1', function (res) {
+//   //   console.log(res)
+//   // })
+//   // getAllChapters(rootId, function (res) {
+//   //   console.log(res)
+//   // })
+// }
+
+
+// function getAllNotes(rootDir, cb) {
+//    
+// }
+
+// Found the root directory
+// function getAllDirWithExt(rootDirId, extension, cb) {
+//   window.gapi.client.drive.files.list({
+//     'q': " '"+ rootDirId + "' in parents and fullText contains '" + extension + "'",
+//     'pageSize': 10,
+//     'fields': "nextPageToken, files(id, name)"
+//   }).execute(function(response) {
+//     cb(response);
+//   })
+// }
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return testIncompleteTaskLoading; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return testCreateChapter; });
+/* unused harmony export testUpdateChapterIntro */
+/* unused harmony export testDeleteChapter */
+/* unused harmony export testCreateTopic */
+/* unused harmony export testDeleteTopic */
+/* unused harmony export testUpdateTopic */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(11);
+
+window.syncSave = __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */]
+
+const testIncompleteTaskLoading = ()=>{
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].loadTasks()
+}
+
+const testCreateNote = ()=>{
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
+    type: 'CREATE_NOTE',
+    payload: {
+      noteId: 1
+    }
+  })
+}
+
+const testCreateChapter = ()=>{
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
+    type: 'CREATE_CHAPTER',
+    payload: {
+      noteId: 1,
+      name: 'chapter 1',
+      chapterLocalId: '1',
+    }
+  })
+}
+
+const testDeleteChapter = ()=>{
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
+    type: 'DELETE_CHAPTER',
+    payload: {
+      noteId: 1,
+      name: 'chapter 1',
+      chapterLocalId: '1',
+      chapterRemoteId: '1',
+    }
+  }) 
+}
+
+const testCreateTopic = ()=>{
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
+    type: 'CREATE_TOPIC',
+    payload: {
+      noteId: 3,
+      name: 'topic 1',
+      topicLocalId: '2',
+      chapterLocalId: '1',
+      chapterRemoteId: '-'
+    }
+  })
+}
+
+const testUpdateTopic = ()=>{  
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
+    type: 'UPDATE_TOPIC_DATA',
+    payload: {
+      noteId: 2,
+      topicLocalId: '1',
+      topicRemoteId: '1',
+      htmlText: '<span>topic id update text</span>'
+    }
+  })
+}
+
+const testDeleteTopic = ()=>{  
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
+    type: 'DELETE_TOPIC',
+    payload: {
+      noteId: 2,
+      chapterLocalId: '1',
+      chapterRemoteId: '1.remote',
+      topicLocalId: '2',
+      topicRemoteId: '2.remote',
+    }
+  })
+}
+
+const testUpdateChapterIntro = ()=>{  
+  __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */].addTask({
+    type: 'UPDATE_CHAPTER_INTRO_FILE',
+    payload: {
+      noteId: 2,
+      chapterRemoteId: '-',
+      chapterLocalId: '2',
+      introId: '2',
+      htmlText: '<span>topic id update text</span>'
+    }
+  })
+}
+
+//   syncSave.addTask({
+//     type: 'DISABLE_CHAPTER',
+//     payload: {
+//       noteId: 2,
+//       chapterLocalId: '1',
+//       chapterRemoteId: '-',
+//     }
+//   })
+
+//   syncSave.addTask({
+//     type: 'DISABLE_TOPIC',
+//     payload: {
+//       noteId: 2,
+//       topicLocalId: '2',
+//       topicRemoteId: '-',
+//     }
+//   })
+
+//   syncSave.addTask({
+//     type: 'UPDATE_METADATA',
+//     payload: {
+//       noteId: 8,
+//       metadata: 'metadata :)'
+//     }
+//   })
+
+//   syncSave.addTask({
+//     type: 'DISABLE_TOPIC',
+//     payload: {
+//       noteId: 3,
+//       topicLocalId: '2',
+//       topicRemoteId: '-'
+//     }
+//   })
+// }
+
+
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
+
+
+
+const addTask = function (self, task){
+  setTimeout(()=>{
+    __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('updateRemaining', true)
+    task.payload.timestamp = self.timeStamp()
+    var _task = Object.assign({}, task)
+      switch (task.type) {
+        case 'CREATE_CHAPTER':
+          // create extrea jobs
+          addTask(self, {
+            type: '@CREATE_CHAPTER_FILE',
+            payload:{
+              noteId: _task.payload.noteId,
+              name: _task.payload.name,
+              chapterLocalId: _task.payload.chapterLocalId,
+            }
+          })
+
+          addTask(self, {
+            type: '@CREATE_CHAPTER_INTRO_FILE',
+            payload:{
+              noteId: _task.payload.noteId,
+              name: _task.payload.name,
+              chapterLocalId: _task.payload.chapterLocalId,
+            }
+          })
+
+          addTask(self, {
+            type: 'UPDATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              metadata: ''
+            }
+          })
+          break;
+
+        case 'CREATE_TOPIC':
+          // create extrea jobs
+          addTask(self, {
+            type: '@CREATE_TOPIC_FILE',
+            payload:{
+              noteId: _task.payload.noteId,
+              name: _task.payload.name,
+              chapterLocalId: _task.payload.chapterLocalId,
+              topicLocalId: _task.payload.topicLocalId,
+            }
+          })
+          addTask(self, {
+            type: 'UPDATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              metadata: ''
+            }
+          })
+          break;
+
+        case 'DELETE_TOPIC':
+          addTask(self, {
+            type: '@DELETE_TOPIC_CREATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              chapterLocalId: _task.payload.chapterLocalId,
+              chapterRemoteId: _task.payload.chapterRemoteId,
+              topicLocalId: _task.payload.topicLocalId,
+              topicRemoteId: _task.payload.topicRemoteId,
+            }
+          })
+
+          addTask(self, {
+            type: '@UPDATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              metadata: ''
+            }
+          })
+
+          addTask(self, {
+            type: '@DELETE_TOPIC_FILE',
+            payload:{
+              noteId: _task.payload.noteId,
+              chapterLocalId: _task.payload.chapterLocalId,
+              chapterRemoteId: _task.payload.chapterRemoteId,
+              topicLocalId: _task.payload.topicLocalId,
+              topicRemoteId: _task.payload.topicRemoteId,
+            }
+          })
+          break
+
+        case 'DELETE_CHAPTER':
+          addTask(self, {
+            type: '@DELETE_CHAPTER_CREATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              chapterLocalId: _task.payload.chapterLocalId,
+              chapterRemoteId: _task.payload.chapterRemoteId,
+            }
+          })
+          addTask(self, {
+            type: '@UPDATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              metadata: ''
+            }
+          })
+
+          addTask(self, {
+            type: '@DELETE_CHAPTER_FILE',
+            payload:{
+              noteId: _task.payload.noteId,
+              chapterLocalId: _task.payload.chapterLocalId,
+              chapterRemoteId: _task.payload.chapterRemoteId,
+            }
+          })
+          break
+
+        case 'UPDATE_CHAPTER_INTRO_FILE':
+          task.type = '@'+task.type
+          addTask(self, task)
+          addTask(self, {
+            type: '@UPDATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              metadata: ''
+            } 
+          })
+          break
+
+        case 'UPDATE_TOPIC_DATA':
+          task.type = '@UPDATE_TOPIC_FILE'
+          addTask(self, task)
+          addTask(self, {
+            type: '@UPDATE_METADATA',
+            payload:{
+              noteId: _task.payload.noteId,
+              metadata: ''
+            } 
+          })
+          break
+
+        default:
+          if (_task.type[0] !== '@') {
+            _task.type = '@'+task.type
+          }
+          self.tasks.push(_task)
+          // update localStorage
+          __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('tasks', self.tasks)
+          break;
+    }
+
+    if (!self.running) {
+      self.run()
+    }
+  }, 50)
+
+  // setTimeout(()=>{
+  // }, 100)
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (addTask);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
+const EXISTS = 1
+
+
+
+/***/ }),
 /* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(13);
-
-// import syncGet from './sync/syncSave'
-
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__sync_syncSave__["a" /* default */]);
+/* harmony default export */ __webpack_exports__["a"] = ({
+  chapters: [
+    {
+      name: 'gapi chap 1',
+      id: '1',
+      topics: [
+        {
+          name: 'gapi topic 1',
+          id: '2',
+        }
+      ]
+    },
+    {
+      name: 'gapi chap 2',
+      id: '2',
+      topics: []
+    },
+    {
+      name: 'gapi chap 3',
+      id: '3',
+      topics: []
+    }
+  ]
+});
 
 /***/ }),
 /* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(14);
+
+// import syncGet from './sync/syncSave'
+
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__sync_syncSave__["a" /* default */]);
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(13);
 
 
 
@@ -1620,7 +1778,7 @@ const execute =  function (self) {
 /* harmony default export */ __webpack_exports__["a"] = (execute);
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1628,7 +1786,7 @@ const execute =  function (self) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return caseUpdateMetadata; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__element_note__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(5);
 
 
 
@@ -1673,15 +1831,15 @@ const caseUpdateMetadata = (self, task)=>{
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(12);
 
 
 
@@ -1766,13 +1924,13 @@ const async = {
 /* harmony default export */ __webpack_exports__["a"] = (async);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(5);
-throw new Error("Cannot find module \"./gapi/gapi\"");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(6);
 window.env = 'prod'
 
 
@@ -1785,7 +1943,7 @@ window.NB = {}
 window.NN = Note
 
 if (window.env === 'dev') {
-  __WEBPACK_IMPORTED_MODULE_1__gapi_gapi___default()((err, res)=>{
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__["a" /* default */])((err, res)=>{
     console.log('Authorized')
     console.log(err, res)
     NB = new NoteBook(res.id)
@@ -1812,19 +1970,19 @@ if (window.env === 'dev') {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = json2Plugin
 
 function json2Plugin() {
-	__webpack_require__(16)
+	__webpack_require__(17)
 	return {}
 }
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 //  json2.js
@@ -2335,7 +2493,7 @@ if (typeof JSON !== "object") {
 }());
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -2557,22 +2715,22 @@ function createStore(storages, plugins) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
 	// Listed in order of usage preference
-	'localStorage': __webpack_require__(20),
-	'oldFF-globalStorage': __webpack_require__(22),
-	'oldIE-userDataStorage': __webpack_require__(23),
-	'cookieStorage': __webpack_require__(19),
-	'sessionStorage': __webpack_require__(24),
-	'memoryStorage': __webpack_require__(21),
+	'localStorage': __webpack_require__(21),
+	'oldFF-globalStorage': __webpack_require__(23),
+	'oldIE-userDataStorage': __webpack_require__(24),
+	'cookieStorage': __webpack_require__(20),
+	'sessionStorage': __webpack_require__(25),
+	'memoryStorage': __webpack_require__(22),
 }
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // cookieStorage is useful Safari private browser mode, where localStorage
@@ -2639,7 +2797,7 @@ function _has(key) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -2683,7 +2841,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 // memoryStorage is a useful last fallback to ensure that the store
@@ -2728,7 +2886,7 @@ function clearAll(key) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldFF-globalStorage provides storage for Firefox
@@ -2776,7 +2934,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldIE-userDataStorage provides storage for Internet Explorer
@@ -2909,7 +3067,7 @@ function _makeIEStorageElFunction() {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -2953,7 +3111,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 var g;
