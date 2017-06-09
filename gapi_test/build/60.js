@@ -1554,13 +1554,7 @@ const addTask = function (self, task){
         case 'DELETE_TOPIC':
           addTask(self, {
             type: '@DELETE_TOPIC_CREATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-              topicLocalId: _task.payload.topicLocalId,
-              topicRemoteId: _task.payload.topicRemoteId,
-            }
+            payload: task.payload
           })
 
           addTask(self, {
@@ -1573,24 +1567,14 @@ const addTask = function (self, task){
 
           addTask(self, {
             type: '@DELETE_TOPIC_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-              topicLocalId: _task.payload.topicLocalId,
-              topicRemoteId: _task.payload.topicRemoteId,
-            }
+            payload: task.payload
           })
           break
 
         case 'DELETE_CHAPTER':
           addTask(self, {
             type: '@DELETE_CHAPTER_CREATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-            }
+            payload: task.payload
           })
           addTask(self, {
             type: '@UPDATE_METADATA',
@@ -1602,11 +1586,7 @@ const addTask = function (self, task){
 
           addTask(self, {
             type: '@DELETE_CHAPTER_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              chapterLocalId: _task.payload.chapterLocalId,
-              chapterRemoteId: _task.payload.chapterRemoteId,
-            }
+            payload: task.payload              
           })
           break
 
