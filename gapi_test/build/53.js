@@ -1503,6 +1503,8 @@ const testUpdateChapterIntro = ()=>{
 
 
 
+
+
 const addTask = function (self, task){
     __WEBPACK_IMPORTED_MODULE_0_store___default.a.set('updateRemaining', true)
     task.payload.timestamp = self.timeStamp()
@@ -1510,50 +1512,35 @@ const addTask = function (self, task){
       switch (task.type) {
         case 'CREATE_CHAPTER':
           // create extrea jobs
-          addTask(self, {
+          self.tasks.push({
             type: '@CREATE_CHAPTER_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              name: _task.payload.name,
-              chapterLocalId: _task.payload.chapterLocalId,
-            }
+            payload: task.payload
           })
 
-          addTask(self, {
+          self.tasks.push({
             type: '@CREATE_CHAPTER_INTRO_FILE',
             payload:{
-              noteId: _task.payload.noteId,
-              name: _task.payload.name,
-              chapterLocalId: _task.payload.chapterLocalId,
+              payload: task.payload
             }
           })
 
-          addTask(self, {
+          task.payload.metadata = ''
+          self.tasks.push({
             type: 'UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            }
+            payload: task.payload
           })
           break;
 
         case 'CREATE_TOPIC':
           // create extrea jobs
-          addTask(self, {
+          self.tasks.push({
             type: '@CREATE_TOPIC_FILE',
-            payload:{
-              noteId: _task.payload.noteId,
-              name: _task.payload.name,
-              chapterLocalId: _task.payload.chapterLocalId,
-              topicLocalId: _task.payload.topicLocalId,
-            }
+            payload: task.payload
           })
-          addTask(self, {
+          task.payload.metadata = ''
+          self.tasks.push({
             type: 'UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            }
+            payload: task.payload
           })
           break;
 
@@ -1578,19 +1565,17 @@ const addTask = function (self, task){
           break
 
         case 'DELETE_CHAPTER':
-          addTask(self, {
+          self.tasks.push({
             type: '@DELETE_CHAPTER_CREATE_METADATA',
             payload: task.payload
           })
-          addTask(self, {
+          task.payload.metadata = ''
+          self.tasks.push({
             type: '@UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            }
+            payload: task.payload
           })
 
-          addTask(self, {
+          self.tasks.push({
             type: '@DELETE_CHAPTER_FILE',
             payload: task.payload              
           })
@@ -1598,25 +1583,21 @@ const addTask = function (self, task){
 
         case 'UPDATE_CHAPTER_INTRO_FILE':
           task.type = '@'+task.type
-          addTask(self, task)
-          addTask(self, {
+          self.tasks.push(task)
+          task.payload.metadata = ''
+          self.tasks.push({
             type: '@UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            } 
+            payload: task.payload
           })
           break
 
         case 'UPDATE_TOPIC_DATA':
           task.type = '@UPDATE_TOPIC_FILE'
-          addTask(self, task)
-          addTask(self, {
+          self.tasks.push(task)
+          task.payload.metadata = ''
+          self.tasks.push({
             type: '@UPDATE_METADATA',
-            payload:{
-              noteId: _task.payload.noteId,
-              metadata: ''
-            } 
+            payload: task.payload
           })
           break
 
