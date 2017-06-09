@@ -134,7 +134,7 @@ utils.encodeBase64 = function(str) {
 /* harmony default export */ __webpack_exports__["d"] = (utils);
 
 const log = function () {
-  if (window.env === 'dev') {
+  if (window.env !== 'dev') {
     var arr = arguments
     console.log.apply(null, arr)
   }
@@ -1812,7 +1812,7 @@ const execute =  function (self) {
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           console.log(task.payload)
           self.note.deleteChapterSync(task.payload.chapterRemoteId, (err, metadata)=>{
-            if (err) { __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(err); return } 
+            if (err) { __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(err); return }
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter delete metadata created')
             console.log(metadata)
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
