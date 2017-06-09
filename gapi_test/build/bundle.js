@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -300,10 +300,28 @@ function isObject(val) {
 	return val && {}.toString.call(val) === '[object Object]'
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(26)))
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var engine = __webpack_require__(18)
+
+var storages = __webpack_require__(19)
+var plugins = [__webpack_require__(16)]
+
+module.exports = engine.createStore(storages, plugins)
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: /home/subhasis/DEV/WEBPACK/async_gapi/app/gapi/element/note.js Shorthand property assignments are valid only in destructuring patterns (41:17)\nYou may need an appropriate loader to handle this file type.\n|         self.metadata = {\n|           updatedAt: ((new Date()).getTime()) - 1000000,\n|           metaId = res.id,\n|           chapters = []\n|         };");
+
+/***/ }),
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -563,453 +581,14 @@ gutil.uploadFile= function uploadFile(fileId, parentId, content, cb, data) {
 /* harmony default export */ __webpack_exports__["a"] = (gutil);
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var engine = __webpack_require__(19)
-
-var storages = __webpack_require__(20)
-var plugins = [__webpack_require__(17)]
-
-module.exports = engine.createStore(storages, plugins)
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
-const EXISTS = 1
-
-
-
-/***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__init_chapters__ = __webpack_require__(11);
-
-
-
-
-//var newNote =  new Note('0B5nfwpxzN1PHazZ4MTFCX0U1OVk')
-function Note (id) {
-  this.noteId = id;
-
-  this.metadata = {}
-  this.noteMetaId = ''
-  // create a note.json if not already exists
-}
-
-var noteProto = Note.prototype;
-
-noteProto.init = function (cb) {
-  var self = this
-
-  // DEV ---------------------------
-  if (window.env === 'dev') {
-    var metadata = __WEBPACK_IMPORTED_MODULE_2__init_chapters__["a" /* default */]
-    __WEBPACK_IMPORTED_MODULE_2__init_chapters__["a" /* default */].noteId = self.noteId
-    self.metadata = metadata
-    setTimeout(()=>{
-      cb(null, self.metadata)
-      // CNote.init((res)=>{
-      //   cb(null, res)
-      // })
-    }, 1000)
-    return 
-  }
-  // DEV END -----------------------
-
-  // keep all task in sync otherwise theere will be inconsistencies bw local and remote
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('note.json', self.noteId, function (err, res) {
-    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(res.id, function (err, noteMeta, len) {
-      self.noteMetaId = res.id;
-      if (len === 0) {
-        self.metadata = {};
-        self.metadata.metaId = res.id;
-
-        if (!self.metadata.chapters) {
-          self.metadata.chapters = []
-        }
-      } else {
-        self.metadata = JSON.parse(noteMeta);
-        if (!self.metadata.chapters) {
-          self.metadata.chapters = []
-        }
-      }
-      if (err) {
-        cb(err, self.metadata)
-        return
-      }
-
-      cb(null, self.metadata)
-      // show all structure
-      // start the noteApp
-    })
-  })
-}
-
-noteProto.getChapters = function (cb) {
-  // get from metadata
-  cb(this.metadata.chapters)
-}
-
-noteProto.getTopics = function (chapterId, cb) {
-  // update metadata
-  // upload the note.json
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.id === chapterId) {
-      cb(chapter.topics)
-      return
-    }
-  }
-}
-noteProto.createChapterSync = function (name, cb) {
-  // DEV ---------------------------
-  if (window.env === 'dev') {
-    // CNote.createChapter(name, function (id) {
-    //   cb(null, {id})
-    // })
-    setTimeout(()=>{
-      cb(null, {id: Math.floor(Math.random()*1000)})
-    }, 500)
-    return
-  }
-  // update metadata
-  // upload the note.json
-  var self = this;
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.name === (name + '.chapter')) {
-      console.log('chapter already exists');
-      cb(chapter, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* EXISTS */])
-      return
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createDirWithExt(this.noteId, name, '.chapter', function (err, res) {
-    if (err) {cb(err); return}
-    cb(null, res)
-  });
-}
-
-noteProto.createChapterIntroSync = function (id, name, cb) {
-  var self = this
-  if (window.env === 'dev') {
-    // DEV:COMM: create localStore intro.md if not already exists
-    
-    // self.metadata.chapters.forEach((chapter)=>{
-    //   if (chapter.id === id) {
-    //     if (chapter.introId === res.id) {
-    //       setTimeout(()=>{
-    //         cb(null, self.metadata)
-    //       }, 1000)
-    //       return
-    //     }
-    //   }
-    // });
-
-    var introId =  Math.floor(Math.random()*1000)
-    self.metadata.chapters.push({
-      name: name,
-      id: id,
-      introId,
-      topics: []
-    })
-    setTimeout(()=>{
-      cb(null, self.metadata, introId)
-    }, 1000)
-    return
-  }
-  // create introduction file
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('intro.md', id, function (err, res) {
-    // save the metadata
-
-    // if intro.md created but not saved in metadata
-    self.metadata.chapters.forEach((chapter)=>{
-      if (chapter.id === id) {
-        if (chapter.introId === res.id) {
-          cb(null, self.metadata, res.id)
-          return
-        }
-      }
-    });
-
-    self.metadata.chapters.push({
-      name: name,
-      id: id,
-      introId: res.id,
-      topics: []
-    })
-    cb(null, self.metadata, res.id) // saved afterwards
-    // save the note metadata
-    // self.updateNoteMetadata(cb, );
-  });
-}
-
-noteProto.createChapter = function (name, cb) {
-  // update metadata
-  // upload the note.json
-  var self = this;
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.name === (name + '.chapter')) {
-      console.log('chapter already exists');
-      cb(chapter, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* EXISTS */])
-      return
-    }
-  }
-
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createDirWithExt(this.noteId, name, '.chapter', function (err, res1) {
-    if (err) {cb(err); return}
-    
-    // create introduction file
-    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('intro.md', res1.id, function (err, res2) {
-      // save the metadata
-      self.metadata.chapters.push({
-        name: res1.name,
-        id: res1.id,
-        introId: res2.id,
-        topics: []
-      })
-      // save the note metadata
-      var fn = function () {
-        
-      }
-      self.updateNoteMetadata(cb, {chapter: res1, intro: res2});
-    });
-
-  });
-}
-
-noteProto.createTopic = function (chapterId, name, cb) {
-  var chapterIndex = -1;
-  var self = this;
-  for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-    var chapter = this.metadata.chapters[i];
-    if (chapter.id === chapterId) { // found chapter
-      chapterIndex = i;
-      for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-        var topic = chapter.topics[j];
-        if (topic.name === name) { // found topic
-          console.log('topic already exists');
-          cb(chapter, __WEBPACK_IMPORTED_MODULE_0__constants__["a" /* EXISTS */])
-          return
-        }
-      }
-
-      break
-    }
-  }
-
-  if (chapterIndex === -1) {return}
-
-  // create the chapter
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists(name+'.md', chapterId, function (err, res) {
-    // save the metadata
-    var chapter = self.metadata.chapters[chapterIndex]
-    chapter.topics.push({
-      name: res.name,
-      id: res.id,
-    })
-
-    // save the metadata
-    self.updateNoteMetadata(cb, {topic: res});
-  });
-}
-
-noteProto.createTopicSync = function (chapterId, name, cb) {
-  // DEV ---------------------------
-    if (window.env === 'dev') {
-      setTimeout(()=>{
-        cb(null, null, Math.floor(Math.random()*1000))
-      }, 1000)
-      return
-    }
-
-    var chapterIndex = -1;
-    var self = this;
-    for(var i = 0, length1 = this.metadata.chapters.length; i < length1; i++){
-      var chapter = this.metadata.chapters[i];
-      if (chapter.id === chapterId) { // found chapter
-        chapterIndex = i;
-        for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-          var topic = chapter.topics[j];
-          if (topic.name === name) { // found topic
-            console.log('topic already exists');
-            cb(null, self.metadata, topic.id)
-            return
-          }
-        }
-
-        break
-      }
-    }
-
-    if (chapterIndex === -1) {return}
-
-    // create the chapter
-    __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists(name+'.md', chapterId, function (err, res) {
-      // save the metadata
-      var chapter = self.metadata.chapters[chapterIndex]
-      chapter.topics.push({
-      name: res.name,
-      id: res.id,
-    })
-
-    cb(null, self.metadata, res.id)
-    // save the metadata
-    // self.updateNoteMetadata(cb, {topic: res});
-  });
-}
-
-noteProto.getTopicData = function (topicId, cb) {
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(topicId, cb);
-}
-
-noteProto.updateTopic = function (id, data, cb) {
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].uploadFile(id, '/', data, cb);
-}
-
-noteProto.deleteChapter = function (id, cb) {
-  var flag = 0;
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    if (chapter.id  === id) {
-      //matched id 
-      this.metadata.chapters.splice(k, 1);
-      flag = 1
-      break
-    }
-  }
-  if (flag) {
-    this.updateNoteMetadata((res)=>{
-      // delete the topic-name.md file
-      __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
-    })
-  }
-}
-
-/**
- * 1. deleteChapterSync
- * 2. updateMetadata
- * 3. deleteFile
- */
-
-noteProto.deleteChapterSync = function (id, cb) {
-  var flag = 0;
-  var self = this
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    console.log(chapter.id, id)
-    if (chapter.id == id) {
-      //matched id 
-      this.metadata.chapters.splice(k, 1);
-      flag = 1
-      break
-    }
-  }
-  if (flag) {
-    cb(null, self.metadata) // saved later
-  } else {
-    cb('Chapter with id => '+ id + ' not found', self.metadata)
-  }
-}
-
-noteProto.deleteTopic = function (id, cb) {
-  var flag = 0;
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-      var topic = chapter.topics[j];
-      if (topic.id  === id) {
-        chapter.topics.splice(j, 1);
-        //matched id 
-        console.log(j)
-        flag = 1
-        break
-      }
-    }
-    if (flag) {break}
-  }
-  if (flag) {
-    this.updateNoteMetadata((res)=>{
-      // delete the topic-name.md file
-      __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
-    })
-  }
-}
-
-/**
- * 1. deleteTopicSync
- * 2. updateMetadata
- * 3. deleteFile
- */
-
-noteProto.deleteTopicSync= function (id, cb) {
-  var flag = 0;
-  // find chapter
-  for(var k = 0, length3 = this.metadata.chapters.length; k < length3; k++){
-    var chapter = this.metadata.chapters[k];
-    for(var j = 0, length2 = chapter.topics.length; j < length2; j++){
-      var topic = chapter.topics[j];
-      if (topic.id  === id) {
-        chapter.topics.splice(j, 1);
-        //matched id 
-        console.log(j)
-        flag = 1
-        break
-      }
-    }
-    if (flag) {break}
-  }
-  if (flag) {
-    cb(null, self.metadata) // saved later
-    // this.updateNoteMetadata((res)=>{
-      // delete the topic-name.md file
-      // gutil.deleteFile(id, cb);
-    // })
-  } else {
-    cb('Topic with id:'+ id + ' not found', self.metadata)
-  }
-}
-
-noteProto.updateNoteMetadata = function (cb, data) {
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].uploadFile(this.noteMetaId, '/', JSON.stringify(this.metadata), cb, data);
-}
-
-noteProto.updateNoteMetadataSync = function (data, cb) {
-  if (window.env === 'dev') {
-    setTimeout(()=>{
-      // CNote.saveMetadata(data)
-      cb(null, 'dev metadata updated.')
-    }, 1000)
-    return
-  }
-  self.metadata = data
-  __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].uploadFile(this.noteMetaId, '/', JSON.stringify(data), cb);
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (Note);
-
-/***/ }),
-/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return updateMetadata; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return updateTopicRemoteId; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return updateChapterRemmoteId; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
 
@@ -1055,12 +634,12 @@ const updateMetadata = function (self, noteId, metadata) {
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__ = __webpack_require__(4);
 
 
 
@@ -1165,11 +744,11 @@ NoteBook.prototype.updateNoteBookMetadata = function (cb) {
 /* harmony default export */ __webpack_exports__["a"] = (NoteBook);
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gutil__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gutil__ = __webpack_require__(4);
 
 
 function handleGauthLoad (cb) {
@@ -1323,7 +902,7 @@ function handleGauthLoad (cb) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1334,7 +913,7 @@ function handleGauthLoad (cb) {
 /* unused harmony export testCreateTopic */
 /* unused harmony export testDeleteTopic */
 /* unused harmony export testUpdateTopic */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gapi__ = __webpack_require__(11);
 
 window.syncSave = __WEBPACK_IMPORTED_MODULE_0__gapi__["a" /* default */]
 
@@ -1465,11 +1044,11 @@ const testUpdateChapterIntro = ()=>{
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
 
@@ -1635,55 +1214,36 @@ const addTask = function (self, task){
 /* harmony default export */ __webpack_exports__["a"] = (addTask);
 
 /***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EXISTS; });
+const EXISTS = 1
+
+
+
+/***/ }),
 /* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  chapters: [
-    {
-      name: 'gapi chap 1',
-      id: '1',
-      topics: [
-        {
-          name: 'gapi topic 1',
-          id: '2',
-        }
-      ]
-    },
-    {
-      name: 'gapi chap 2',
-      id: '2',
-      topics: []
-    },
-    {
-      name: 'gapi chap 3',
-      id: '3',
-      topics: []
-    }
-  ]
-});
-
-/***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sync_syncSave__ = __webpack_require__(14);
 
 // import syncGet from './sync/syncSave'
 
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__sync_syncSave__["a" /* default */]);
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__element_note___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__element_note__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__note_cases__ = __webpack_require__(13);
 
 
 
@@ -1888,15 +1448,16 @@ const execute =  function (self) {
 /* harmony default export */ __webpack_exports__["a"] = (execute);
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return caseCreateNote; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return caseUpdateMetadata; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__element_note__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__element_note__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__element_note___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__element_note__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__update_future_tasks__ = __webpack_require__(5);
 
 
 
@@ -1907,7 +1468,7 @@ const caseCreateNote = (self, task) => {
     self.next(1)
   } else {
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(' -> Create a note from id ', task.payload.noteId)
-    window.note = self.note = new __WEBPACK_IMPORTED_MODULE_0__element_note__["a" /* default */](task.payload.noteId)
+    window.note = self.note = new __WEBPACK_IMPORTED_MODULE_0__element_note__["default"](task.payload.noteId)
     self.note.init((err, metadata)=>{
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["a" /* log */])(metadata)
       self.note.metadata = metadata
@@ -1941,15 +1502,15 @@ const caseUpdateMetadata = (self, task)=>{
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_store___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_store__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addTask_addTask__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__execute__ = __webpack_require__(12);
 
 
 
@@ -2034,14 +1595,14 @@ const async = {
 /* harmony default export */ __webpack_exports__["a"] = (async);
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tests_server_sync__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gapi_gcode_gauth__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gapi_element_notebook__ = __webpack_require__(6);
 window.env = 'prod'
 
 
@@ -2080,19 +1641,19 @@ if (window.env !== 'dev') {
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = json2Plugin
 
 function json2Plugin() {
-	__webpack_require__(18)
+	__webpack_require__(17)
 	return {}
 }
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports) {
 
 //  json2.js
@@ -2603,7 +2164,7 @@ if (typeof JSON !== "object") {
 }());
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -2825,22 +2386,22 @@ function createStore(storages, plugins) {
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
 	// Listed in order of usage preference
-	'localStorage': __webpack_require__(22),
-	'oldFF-globalStorage': __webpack_require__(24),
-	'oldIE-userDataStorage': __webpack_require__(25),
-	'cookieStorage': __webpack_require__(21),
-	'sessionStorage': __webpack_require__(26),
-	'memoryStorage': __webpack_require__(23),
+	'localStorage': __webpack_require__(21),
+	'oldFF-globalStorage': __webpack_require__(23),
+	'oldIE-userDataStorage': __webpack_require__(24),
+	'cookieStorage': __webpack_require__(20),
+	'sessionStorage': __webpack_require__(25),
+	'memoryStorage': __webpack_require__(22),
 }
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // cookieStorage is useful Safari private browser mode, where localStorage
@@ -2907,7 +2468,7 @@ function _has(key) {
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -2951,7 +2512,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports) {
 
 // memoryStorage is a useful last fallback to ensure that the store
@@ -2996,7 +2557,7 @@ function clearAll(key) {
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldFF-globalStorage provides storage for Firefox
@@ -3044,7 +2605,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // oldIE-userDataStorage provides storage for Internet Explorer
@@ -3177,7 +2738,7 @@ function _makeIEStorageElFunction() {
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var util = __webpack_require__(1)
@@ -3221,7 +2782,7 @@ function clearAll() {
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports) {
 
 var g;
