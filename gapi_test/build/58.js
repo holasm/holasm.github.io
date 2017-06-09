@@ -1066,11 +1066,13 @@ const updateMetadata = function (self, noteId, metadata) {
   updateFutureTask(self, (task)=>{
     if (task.type === '@UPDATE_METADATA') {
       if (task.payload.noteId === noteId) {
+        console.log('Updating future metadata....')
         task.payload.metadata = metadata
         __WEBPACK_IMPORTED_MODULE_1__utils__["b" /* logStore */].push('Update metadata => ',task.type)
       }
     }
   });
+
 }
 
 
@@ -1788,22 +1790,17 @@ const execute =  function (self) {
       break
 
     case '@DELETE_CHAPTER_CREATE_METADATA':
-        console.log('++++++++++++==================')
       self.assertNote(task, ()=>{
-        console.log('++++++++++++==================')
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           console.log(task.payload)
-          console.log('++++++++++++==================')
           self.note.deleteChapterSync(task.payload.chapterRemoteId, (err, metadata)=>{
             if (err) { __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(err); return }
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter delete metadata created')
             console.log(metadata)
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, self.note.noteId, metadata)
-            console.log('-----------------')
             self.next()
           })
         }, ()=>{
-          console.log('==================')
           self.next(1)
         })
       })
