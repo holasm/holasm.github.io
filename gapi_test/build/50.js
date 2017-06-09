@@ -1851,8 +1851,8 @@ const execute =  function (self) {
     case '@DELETE_CHAPTER_FILE':
       self.assertNote(task, ()=>{
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
-          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> New topic created')
-          self.note.deleteTopic(task.payload.topicRemoteId, (err, res)=>{
+          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter file deleted.')
+          self.note.deleteTopic(task.payload.chapterRemoteId, (err, res)=>{
             self.next()
           })
         }, ()=>{
