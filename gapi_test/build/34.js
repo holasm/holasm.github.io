@@ -1543,12 +1543,12 @@ const addTask = function (self, task){
           break;
 
         case 'DELETE_TOPIC':
-          addTask(self, {
+          self.tasks.push({
             type: '@DELETE_TOPIC_CREATE_METADATA',
             payload: task.payload
           })
 
-          addTask(self, {
+          self.tasks.push({
             type: '@UPDATE_METADATA',
             payload:{
               noteId: _task.payload.noteId,
@@ -1556,7 +1556,7 @@ const addTask = function (self, task){
             }
           })
 
-          addTask(self, {
+          self.tasks.push({
             type: '@DELETE_TOPIC_FILE',
             payload: task.payload
           })
