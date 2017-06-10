@@ -641,13 +641,14 @@ noteProto.init = function (cb) {
         self.metadata = JSON.parse(noteMeta)
         self.metadata.chapters = []
         self.metadata.metaId = res.id
+      } else {
+        self.metadata = JSON.parse(noteMeta)
       }
 
       if (!self.metadata.updatedAt) {
         cb('Error: Note updatedAt prop not found!')
       }
 
-      self.metadata = JSON.parse(noteMeta)
       console.log(noteMeta)
       console.log(self.metadata)
 
