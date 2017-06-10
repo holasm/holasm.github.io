@@ -629,7 +629,7 @@ noteProto.init = function (cb) {
   __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].createFileIfNotExists('note.json', self.noteId, function (err, res) {
     __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].downloadAndDecode(res.id, function (err, noteMeta, len) {
       self.noteMetaId = res.id;
-      if (len === 0) {
+      if (len == 0) {
         self.metadata = {
           updatedAt: ((new Date()).getTime()) - 1000000,
           metaId: res.id,
@@ -645,7 +645,7 @@ noteProto.init = function (cb) {
       if (!self.metadata.updatedAt) {
         cb('Error: Note updatedAt prop not found!')
       }
-      
+
       self.metadata = JSON.parse(noteMeta)
       console.log(noteMeta)
       console.log(self.metadata)
