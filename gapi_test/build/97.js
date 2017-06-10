@@ -1793,7 +1793,7 @@ const execute =  function (self) {
       self.assertNote(task, ()=>{
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> New topic created')
-          self.note.createTopicSync(task.payload.topicRemoteId, task.payload.name, (err, metadata, id)=>{
+          self.note.createTopicSync(task.payload.chapterRemoteId, task.payload.name, (err, metadata, id)=>{
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["c" /* updateTopicRemoteId */])(self, task.payload.topicLocalId, id)
             __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__update_future_tasks__["b" /* updateMetadata */])(self, task.payload.noteId, self.note.metadata) // for DEV metadata === null
             self.next()
