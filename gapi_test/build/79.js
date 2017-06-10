@@ -1551,7 +1551,7 @@ const addTask = function (self, task){
           self.tasks.push({
             type: '@UPDATE_METADATA',
             payload:{
-              noteId: _task.payload.noteId,
+              noteId: task.payload.noteId,
               metadata: ''
             }
           })
