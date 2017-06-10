@@ -949,7 +949,7 @@ noteProto.deleteChapterSync = function (id, cb) {
   }
 }
 
-noteProto.deleteChapterFile = function (id, cb) {
+noteProto.deleteFile = function (id, cb) {
   __WEBPACK_IMPORTED_MODULE_1__gcode_gutil__["a" /* default */].deleteFile(id, cb);
 }
 
@@ -1859,7 +1859,7 @@ const execute =  function (self) {
       self.assertNote(task, ()=>{
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
           __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Chapter file deleted.')
-          self.note.deleteChapterFile(task.payload.chapterRemoteId, (err, res)=>{
+          self.note.deleteFile(task.payload.chapterRemoteId, (err, res)=>{
             self.next()
           })
         }, ()=>{
@@ -1870,8 +1870,16 @@ const execute =  function (self) {
       break // using metaId
 
     case '@DELETE_TOPIC_FILE':
-      self.next()
-      // caseUpdateMetadata(self, task)
+      self.assertNote(task, ()=>{
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* assertUpdate */])(self.note.metadata, task, ()=>{
+          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* log */])(' -> Topic file deleted.')
+          self.note.deleteFile(task.payload.topicRemoteId, (err, res)=>{
+            self.next()
+          })
+        }, ()=>{
+          self.next(1)
+        })
+      })
       break // using metaId
 
     case '@UPDATE_METADATA':
