@@ -1069,7 +1069,6 @@ const updateTopicRemoteId = function (self, localId, remoteId) {
 const updateMetadata = function (self, noteId, metadata) {
   console.log([].concat(self.tasks))
   updateFutureTask(self, (task)=>{
-    console.log(noteId, task, noteId === task.payload.noteId)
     if (task.type === '@UPDATE_METADATA') {
       console.log(noteId, task, noteId === task.payload.noteId)
       if (task.payload.noteId === noteId) {
