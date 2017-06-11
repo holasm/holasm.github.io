@@ -1,0 +1,70 @@
+.editor-page{
+  /* position: fixed; */
+  width: 100%;
+  height: 100%;
+  .editor-wrapper{
+    height: 100%;
+    position: relative;
+    /* padding: 16px; */
+    .editor-layout{
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+.editor-content{
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  /* padding-bottom: 12px; */
+  /* background: crimson; */
+  .md-editor-tabbed{
+    height: 100%;
+    /* padding: 0 16px; */
+    .tab-items {
+      .tab-item{
+        padding: 18px 0 18px;
+        /* overflow: auto; */
+        height: 100%;
+      }
+    }
+    .editor-container{
+      height: 100%;
+      .md-edit-area{
+        height: calc(100% - 36px - 16px);
+      }
+    }
+  }
+  .md-editor-sided{
+    position: relative;
+    height: 100%;
+    /* background: green; */
+    padding-top: 16px;
+    padding-bottom: 10px;
+    .preview-container{
+      height: 100%;
+      overflow-y: auto;
+      padding: 5px;
+      /* box-shadow: inset 0px -2px 4px 1px #aaa; */
+    }
+    .editor-container{
+      height: 100%;
+      padding: 5px;
+      .md-edit-area{
+        height: calc(100% - 36px - 16px);
+      }
+    }
+  }
+
+  .md-editor-top-down{
+    height: 100%;
+    overflow-y: auto;
+    padding: 16px;
+    padding-bottom: 0;
+    /* background: red; */
+  }
+}
+.overflow-scroll{
+  overflow-y: auto;
+}

@@ -1,0 +1,32 @@
+.login-page-container{
+  background: #eee;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  .login-page{
+    position: absolute;
+    top: 50px;
+    position: relative;
+
+    .login-page-info{
+      text-align: center;
+      font-size: 30px;
+      padding: 30px;
+    }
+
+    .login-page-signup{
+      padding: 20px 8px;
+      text-align: center;
+      .new-signup{
+        padding: 20px 0;
+        background: white;
+        border-radius: 5px;
+      }
+    }
+
+    // .main-form{
+    //   border: 1px solid blue;
+    // }
+  }
+}
