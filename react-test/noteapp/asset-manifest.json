@@ -1,22 +1,16 @@
 {
   "main.css": "holasm.github.io/react-test/noteapp/static/css/main.6a53dbfd.css",
   "main.css.map": "holasm.github.io/react-test/noteapp/static/css/main.6a53dbfd.css.map",
-  "main.js": "holasm.github.io/react-test/noteapp/static/js/main.5a811fb2.js",
-  "main.js.map": "holasm.github.io/react-test/noteapp/static/js/main.5a811fb2.js.map",
-  "holasm.github.io/react-test/noteapp/static/media/compact-editor-index.scss": "holasm.github.io/react-test/noteapp/static/media/compact-editor-index.89c8b412.scss",
-  "holasm.github.io/react-test/noteapp/static/media/compact-md-view.scss": "holasm.github.io/react-test/noteapp/static/media/compact-md-view.a20182ae.scss",
-  "holasm.github.io/react-test/noteapp/static/media/context-menu.scss": "holasm.github.io/react-test/noteapp/static/media/context-menu.7c0792b3.scss",
+  "main.js": "holasm.github.io/react-test/noteapp/static/js/main.1e2b8efa.js",
+  "main.js.map": "holasm.github.io/react-test/noteapp/static/js/main.1e2b8efa.js.map",
   "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.eot": "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.f4769f9b.eot",
   "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.svg": "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.89889688.svg",
   "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.ttf": "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.e18bbf61.ttf",
   "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.woff": "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.fa277232.woff",
   "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.woff2": "holasm.github.io/react-test/noteapp/static/media/glyphicons-halflings-regular.448c34a5.woff2",
-  "holasm.github.io/react-test/noteapp/static/media/index.scss": "holasm.github.io/react-test/noteapp/static/media/index.b5888ea8.scss",
   "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.eot?v=1.9.32": "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.f540b423.eot",
   "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.svg?v=1.9.32": "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.633c9b84.svg",
   "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.ttf?v=1.9.32": "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.292b2f8e.ttf",
   "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.woff2?v=1.9.32": "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.7f88c63c.woff2",
-  "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.woff?v=1.9.32": "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.c28dbbac.woff",
-  "holasm.github.io/react-test/noteapp/static/media/md.scss": "holasm.github.io/react-test/noteapp/static/media/md.8a4c981d.scss",
-  "holasm.github.io/react-test/noteapp/static/media/mdview.scss": "holasm.github.io/react-test/noteapp/static/media/mdview.c61d282c.scss"
+  "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.woff?v=1.9.32": "holasm.github.io/react-test/noteapp/static/media/materialdesignicons-webfont.c28dbbac.woff"
 }
